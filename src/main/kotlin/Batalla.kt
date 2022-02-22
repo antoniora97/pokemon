@@ -2,7 +2,7 @@ class Batalla(pokemon1:Pokemon, pokemon2:Pokemon) {
     val pokemon1=pokemon1
     val pokemon2=pokemon2
  fun turnos(){
-     var danio : Int
+     var danio : Int = 0
   if (pokemon1.velocidad>pokemon2.velocidad){ //Comprueba quien es más rápido, ese empieza //Anotación de la lista DatosMovimiento:
     var accion:Int = (1..10).random() // 0=ATK actual, 1=Potencia Movimiento 2=Tipo Movimiento 3=Precision Movimiento 4=Efecto
     if (pokemon1.estado==2) {pokemon1.ComprobarEstado(pokemon1.estado)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
@@ -11,7 +11,10 @@ class Batalla(pokemon1:Pokemon, pokemon2:Pokemon) {
     if (accion<=7){ //Ataca
       var datos=pokemon1.Atacar(pokemon1.Movimientos())
       if (ComprobarAcierto(datos[3].toInt(),pokemon2.evasion)){ //Comprueba que el ataque acierta
-          danio = calcularDanio(pokemon1.currenAttack,pokemon2.currentDefense,datos[1].toInt(),datos[2],pokemon2.Type())
+          when(datos[2]){
+              "Fisico"->danio = calcularDanio(pokemon1.currenAttack,pokemon2.currentDefense,datos[1].toInt(),datos[3],pokemon2.Type())
+              "Especial" ->danio = calcularDanio(pokemon1.currentSpAttack,pokemon2.currentSpDefense,datos[1].toInt(),datos[3],pokemon2.Type())
+          }
        pokemon2.recibirDanyo(danio) //Hace to.do el cálculo del daño
        ActivarHabilidad(pokemon1,pokemon2,datos[4].toInt()) //Activa el efecto del movimiento
        if (pokemon1.estado==1 || pokemon1.estado==3){ //Estos estados se tienen que activar en el mismo momento que se usa el movimiento
@@ -30,7 +33,10 @@ class Batalla(pokemon1:Pokemon, pokemon2:Pokemon) {
    if (accion2<=7){ //Ataca
     var datos2=pokemon2.Atacar(pokemon2.Movimientos())
     if (ComprobarAcierto(datos2[3].toInt(),pokemon1.evasion)){ //Comprueba que el ataque acierta
-    danio = calcularDanio(pokemon1.currenAttack,pokemon2.currentDefense,datos2[1].toInt(),datos2[2],pokemon2.Type())
+        when(datos2[2]){
+            "Fisico"->danio = calcularDanio(pokemon1.currenAttack,pokemon2.currentDefense,datos2[1].toInt(),datos2[3],pokemon2.Type())
+            "Especial" ->danio = calcularDanio(pokemon1.currentSpAttack,pokemon2.currentSpDefense,datos2[1].toInt(),datos2[3],pokemon2.Type())
+        }
      pokemon2.recibirDanyo(danio) //Hace to.do el cálculo del daño
      ActivarHabilidad(pokemon1,pokemon2,datos2[4].toInt()) //Activa el efecto del movimiento
      if (pokemon2.estado==1 || pokemon2.estado==3){ //Estos estados se tienen que activar en el mismo momento que se usa el movimiento
@@ -50,7 +56,10 @@ class Batalla(pokemon1:Pokemon, pokemon2:Pokemon) {
       if (accion2<=7){ //Ataca
           var datos2=pokemon2.Atacar(pokemon2.Movimientos())
           if (ComprobarAcierto(datos2[3].toInt(),pokemon1.evasion)){ //Comprueba que el ataque acierta
-               danio=calcularDanio(pokemon2.currenAttack,pokemon1.currentDefense,datos2[1].toInt(),datos2[2],pokemon2.Type())
+              when(datos2[2]){
+                  "Fisico"->danio = calcularDanio(pokemon1.currenAttack,pokemon2.currentDefense,datos2[1].toInt(),datos2[3],pokemon2.Type())
+                  "Especial" ->danio = calcularDanio(pokemon1.currentSpAttack,pokemon2.currentSpDefense,datos2[1].toInt(),datos2[3],pokemon2.Type())
+              }
               pokemon1.recibirDanyo(danio) //Hace to.do el cálculo del daño
               ActivarHabilidad(pokemon1,pokemon2,datos2[4].toInt()) //Activa el efecto del movimiento
               if (pokemon2.estado==1 || pokemon2.estado==3){ //Estos estados se tienen que activar en el mismo momento que se usa el movimiento
@@ -69,7 +78,10 @@ class Batalla(pokemon1:Pokemon, pokemon2:Pokemon) {
       if (accion<=7){ //Ataca
           var datos=pokemon1.Atacar(pokemon1.Movimientos())
           if (ComprobarAcierto(datos[3].toInt(),pokemon2.evasion)){ //Comprueba que el ataque acierta
-              danio = calcularDanio(pokemon1.currenAttack,pokemon2.currentDefense,datos[1].toInt(),datos[2],pokemon2.Type())
+              when(datos[2]){
+                  "Fisico"->danio = calcularDanio(pokemon1.currenAttack,pokemon2.currentDefense,datos[1].toInt(),datos[3],pokemon2.Type())
+                  "Especial" ->danio = calcularDanio(pokemon1.currentSpAttack,pokemon2.currentSpDefense,datos[1].toInt(),datos[3],pokemon2.Type())
+              }
               pokemon2.recibirDanyo(danio) //Hace to.do el cálculo del daño
               ActivarHabilidad(pokemon1,pokemon2,datos[4].toInt()) //Activa el efecto del movimiento
               if (pokemon1.estado==1 || pokemon1.estado==3){ //Estos estados se tienen que activar en el mismo momento que se usa el movimiento
@@ -97,6 +109,7 @@ class Batalla(pokemon1:Pokemon, pokemon2:Pokemon) {
   val danioTotal=danio*modificador
   return danioTotal.toInt()
  }
+
  fun ComprobarAcierto(Precision:Int,Evasion:Int):Boolean{ //Cuando se usa un movimiento se tira una moneda
      val acierto:Int = (1..Precision).random()            //al aire para ver si acierta o no, para acertar
      if (acierto>Evasion) {return true}                    //el resultado debe ser mayor a la evasión del pokemon enemigo
@@ -115,4 +128,5 @@ class Batalla(pokemon1:Pokemon, pokemon2:Pokemon) {
    if(tipo1=="Fuego" && tipo2=="Agua"){ return 0.5 }
    if (tipo1=="Planta" && tipo2=="Fuego") { return 0.5 }
    return 1.0 }
-  }
+}
+

@@ -1,5 +1,6 @@
-class Movimiento(nombre:String,type:String, power:Int, accuracy:Int,PP:Int, efecto:Int) {
+class Movimiento(nombre:String,type:String, category: String,  power:Int, accuracy:Int,PP:Int, efecto:Int) {
     val efecto1:Int = efecto
+    val categoria: String = category
     val nombre1:String = nombre
     var PowerPoints:Int = PP
     val potencia:Int = power

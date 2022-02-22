@@ -1,6 +1,6 @@
-val bulbasur = Pokemon("Bulbasur", 100, 34, 46, "Planta",
-    arrayListOf("Yvisaur", "Venusaur"), arrayListOf(latigoCepa,absorber,placaje), arrayListOf(pocion,superpocion,restauratodo),5,0,70)
-val charmander = Pokemon("Charmander", 100, 45, 64, "Fuego",
-    arrayListOf("Charmeleon", "Charizard"), arrayListOf(ascuas,lanzallamas,placaje), arrayListOf(pocion),5,0,80)
-val squirtle = Pokemon("Squirtle", 100, 60, 34, "Agua",
-    arrayListOf("Wartotle", "Blastoise"), arrayListOf(pistolaAgua,buceo,placaje), arrayListOf(pocion),5,0,90)
+val chikorita = Pokemon("Chikorita", 46, 49, 49, 65,65,"Planta",
+    arrayListOf("Bayleef", "Meganium"), arrayListOf(latigoCepa,gigadrenado,placaje), arrayListOf(pocion,superpocion,restauratodo),5,0,45)
+val cyndaquil = Pokemon("Cyndaquil", 39, 52, 60, 43,50,"Fuego",
+    arrayListOf("Quilava", "Typhlosion"), arrayListOf(ascuas,lanzallamas,placaje), arrayListOf(pocion),5,0,65)
+val totodile = Pokemon("Totodile", 50, 65,44, 64, 48,"Agua",
+    arrayListOf("Croconaw", "Feraligatr"), arrayListOf(pistolaAgua,buceo,placaje), arrayListOf(pocion),5,0,43)

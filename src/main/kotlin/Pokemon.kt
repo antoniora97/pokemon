@@ -1,7 +1,7 @@
-class Pokemon(name: String, hp: Int, attack: Int, defense: Int, type: String,
+class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, SpDefense: Int, type: String,
   Evoluciones: ArrayList<String>, movimientos: ArrayList<Movimiento>,
   objetos: ArrayList<Objeto>, evasion:Int, estado:Int, velocidad:Int) :
-    PokeStats(name, hp, attack, defense, type, Evoluciones, movimientos, objetos, evasion, estado, velocidad),
+    PokeStats(name, hp, attack, SpAttack, defense, SpDefense, type, Evoluciones, movimientos, objetos, evasion, estado, velocidad),
     Acciones{
     private var tipo:String = type
     private var objeto:ArrayList<Objeto> = objetos
@@ -10,9 +10,9 @@ class Pokemon(name: String, hp: Int, attack: Int, defense: Int, type: String,
         if (currentHP > 0) {
             currentHP -= danyo
             if (currentHP < 0) currentHP = 0
-            return "$name recibió $danyo de daño.\n\n"
+            return "$name recibió $danyo de daño."
         }
-        return "$name ya no puede recibir más daño.\n\n"
+        return "$name ya no puede recibir más daño."
     }
     fun Type():String{
         return tipo
@@ -51,20 +51,82 @@ class Pokemon(name: String, hp: Int, attack: Int, defense: Int, type: String,
         return curacion
     }
     override fun Atacar(Movimientos:ArrayList<Movimiento>): ArrayList<String>{ //Anotación de la lista DatosMovimiento:
-        val eleccion:Movimiento = Movimientos.random() // 0=ATK actual, 1=Potencia Movimiento 2=Tipo Movimiento
-        val DatosMovimiento:ArrayList<String> = arrayListOf(currenAttack.toString(),eleccion.potencia.toString(),eleccion.tipo,eleccion.precision.toString(),eleccion.efecto1.toString())
+        val eleccion:Movimiento = Movimientos.random() // 0=ATK actual, 1=Potencia Movimiento 2=Categoría 3=Tipo Movimiento
+        val DatosMovimiento:ArrayList<String>
+        if (eleccion.categoria=="Fisico"){ DatosMovimiento = arrayListOf(currenAttack.toString(),eleccion.potencia.toString(),eleccion.tipo,eleccion.precision.toString(),eleccion.efecto1.toString())}
+        else{DatosMovimiento = arrayListOf(currentSpAttack.toString(),eleccion.potencia.toString(),eleccion.tipo,eleccion.precision.toString(),eleccion.efecto1.toString())}
         println("$name usó ${eleccion.nombre1}")       //3=Precision Movimiento 4=Efecto
         return  DatosMovimiento
     }
     override fun Evolucionar() { //Hace que el pokemon evolucione, le cambie el nombre,
-            attack = (attack * 1.2).toInt() //y le suba el ATK
-            val oldName = name
-            if (contadorEvoluciones < Evoluciones.size) {
-                name = Evoluciones[contadorEvoluciones]
-                contadorEvoluciones += 1
-                println("$oldName ha evolucionado a $name!!. Su ataque aumentó!!.")
-            } else println("$name ya no puede evolucionar más.")
+        val oldName = name
+        if (contadorEvoluciones < Evoluciones.size) {
+            name = Evoluciones[contadorEvoluciones]
+            contadorEvoluciones += 1
+            println("$oldName ha evolucionado a $name!!. Su ataque aumentó!!.")
+        } else println("$name ya no puede evolucionar más.")
+        when(name){
+            "Bayleef"->{
+                val newHP:Int = 60
+                if (currentHP<hp){
+                    currentHP+=(newHP-hp) }
+                attack=62
+                defense=80
+                SpAttack=63
+                SpDefense=80
+                velocidad=60 }
+        "Meganium"->{
+            val newHP:Int = 80
+            if (currentHP<hp){
+                currentHP+=(newHP-hp)
+                hp=newHP }
+            attack=82
+            defense=100
+            SpAttack=83
+            SpDefense=100
+            velocidad=80 }
+        "Quilava"->{
+            val newHP:Int = 58
+            if (currentHP<hp){
+                currentHP+=(newHP-hp)
+                hp=newHP }
+            attack=64
+            defense=58
+            SpAttack=80
+            SpDefense=65
+            velocidad=80 }
+        "Typhlosion"->{
+            val newHP:Int = 78
+            if (currentHP<hp){
+                currentHP+=(newHP-hp)
+                hp=newHP }
+            attack=84
+            defense=78
+            SpAttack=109
+            SpDefense=85
+            velocidad=100 }
+        "Croconaw"->{
+            val newHP:Int = 65
+            if (currentHP<hp){
+                currentHP+=(newHP-hp)
+                hp=newHP }
+            attack=80
+            defense=80
+            SpAttack=59
+            SpDefense=63
+            velocidad=58 }
+        "Feraligtr"->{
+            val newHP:Int = 85
+            if (currentHP<hp){
+                currentHP+=(newHP-hp)
+                hp=newHP }
+            attack=105
+            defense=100
+            SpAttack=79
+            SpDefense=83
+            velocidad=78 }
         }
     }
+}
 
 

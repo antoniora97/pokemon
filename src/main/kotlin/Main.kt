@@ -1,6 +1,6 @@
 
 fun main () {
-    val Pelea= Batalla(bulbasur,squirtle)
+    val Pelea= Batalla(cyndaquil,chikorita)
     while(Pelea.pokemon1.currentHP>0 && Pelea.pokemon2.currentHP>0){
         Pelea.turnos()
     }

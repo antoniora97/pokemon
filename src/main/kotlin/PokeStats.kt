@@ -10,13 +10,15 @@ val restoringItems : Map<String, Int> = mapOf(
 abstract class PokeStats
     (
     var name: String,
-    protected val hp : Int,
+    protected var hp : Int,
     protected var attack :  Int,
-    protected val defense : Int,
+    protected var SpAttack: Int,
+    protected var defense : Int,
+    protected var SpDefense : Int,
     protected val type: String,
-    protected var Evoluciones: ArrayList<String>,
-    protected var movimientos: ArrayList<Movimiento>,
-    protected var objetos: ArrayList<Objeto>,
+    protected val Evoluciones: ArrayList<String>,
+    protected val movimientos: ArrayList<Movimiento>,
+    protected val objetos: ArrayList<Objeto>,
     public var evasion:Int,
     public var velocidad:Int,
     public var estado:Int
@@ -25,7 +27,9 @@ abstract class PokeStats
     //Atributos iniciales
     var currentHP = hp
     var currenAttack = attack
+    var currentSpAttack = SpAttack
     var currentDefense = defense
+    var currentSpDefense = SpDefense
     var contadorEvoluciones = 0
     var condition = 0
     /*
