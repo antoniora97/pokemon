@@ -31,13 +31,6 @@ abstract class PokeStats
     var currentDefense = defense
     var currentSpDefense = SpDefense
     var contadorEvoluciones = 0
-    var condition = 0
-    /*
-        0 -> normal
-        1 -> sumergido
-        2 -> quemado
-        3 -> pincho
-     */
 
     //Imprime todas las estadísticas del pokemon
     fun showStats () : String {

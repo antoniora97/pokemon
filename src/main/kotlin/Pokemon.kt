@@ -23,17 +23,27 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
     fun Movimientos():ArrayList<Movimiento>{
         return moves
     }
-    fun curar(recuperacion:Int){       //Recibe la cantidad a curar del objeto y cura al pokemon
-        currentHP+=recuperacion
-        println("$name se ha curado")
+    fun HP() : Int {
+        return hp
     }
+
+    //Recibe la cantidad a curar del objeto y cura al pokemon
+    fun curar(recuperacion:Int){
+        currentHP += recuperacion
+        if (currentHP > hp) currentHP = hp
+        println("$name se ha curado $recuperacion puntos de vida ($currentHP/$hp).")
+    }
+
     fun ComprobarEstado(estado: Int){ //Aplica los efectos de los distintos estados:
+        //1=Sumergido sube la evasion a 100 así no recibe daño
+        //2=Quemado recibe 3 de daño cada turno
+        //3=Fotosintesis se cura 10 de vida
         if(estado==0){
             evasion-=95
         }
-        if(estado==1){                      //1=Sumergido sube la evasion a 100 así no recibe daño
-            evasion+=95                    //2=Quemado recibe 3 de daño cada turno
-            println("$name se ha sumergido!!") //3=Fotosintesis se cura 10 de vida
+        if(estado==1){
+            evasion+=95
+            println("$name se ha sumergido!!")
         }
         if(estado==2){
             currentHP-=3
