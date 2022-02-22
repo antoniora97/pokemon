@@ -1,10 +1,8 @@
 
-interface IAgua {
+interface Acciones {
 
-    //Sumerge al pokemon en el agua, haciéndolo imposible de atacar
-    fun sumergir ()
-
-    //Saca del agua al pokemon
-    fun respirar ()
+    fun Atacar(Movimientos:ArrayList<Movimiento>): ArrayList<String>
+    fun UsarObjeto(lista:ArrayList<Objeto>):Int
+    fun Evolucionar():String
 
 }
