@@ -25,10 +25,14 @@ class Pokemon(name: String, hp: Int, attack: Int, defense: Int, type: String,
     }
     fun curar(recuperacion:Int){       //Recibe la cantidad a curar del objeto y cura al pokemon
         currentHP+=recuperacion
+        println("$name se ha curado")
     }
-    fun ComprobarEstado(estado: Int){       //Aplica los efectos de los distintos estados:
+    fun ComprobarEstado(estado: Int){ //Aplica los efectos de los distintos estados:
+        if(estado==0){
+            evasion-=95
+        }
         if(estado==1){                      //1=Sumergido sube la evasion a 100 así no recibe daño
-            evasion=100                     //2=Quemado recibe 3 de daño cada turno
+            evasion+=95                    //2=Quemado recibe 3 de daño cada turno
             println("$name se ha sumergido!!") //3=Fotosintesis se cura 10 de vida
         }
         if(estado==2){
@@ -42,8 +46,8 @@ class Pokemon(name: String, hp: Int, attack: Int, defense: Int, type: String,
 
     }
     override fun UsarObjeto(lista:ArrayList<Objeto>):Int{ //Devuelve a batalla la cantidad de salud
-        val curacion=objeto[0].curacion()                  // que va a recuperar el pokemon
-        println("Le has dado ${objeto[0].nombre()} a $name")
+        val curacion=objeto[(0..objeto.size-1).random()].curacion()                  // que va a recuperar el pokemon
+        println("Le has dado ${objeto[(0..objeto.size-1).random()].nombre()} a $name")
         return curacion
     }
     override fun Atacar(Movimientos:ArrayList<Movimiento>): ArrayList<String>{ //Anotación de la lista DatosMovimiento:
@@ -52,14 +56,14 @@ class Pokemon(name: String, hp: Int, attack: Int, defense: Int, type: String,
         println("$name usó ${eleccion.nombre1}")       //3=Precision Movimiento 4=Efecto
         return  DatosMovimiento
     }
-    override fun Evolucionar(): String { //Hace que el pokemon evolucione, le cambie el nombre,
+    override fun Evolucionar() { //Hace que el pokemon evolucione, le cambie el nombre,
             attack = (attack * 1.2).toInt() //y le suba el ATK
             val oldName = name
-            return if (contadorEvoluciones < Evoluciones.size) {
+            if (contadorEvoluciones < Evoluciones.size) {
                 name = Evoluciones[contadorEvoluciones]
                 contadorEvoluciones += 1
-                "$oldName ha evolucionado a $name!!. Su ataque aumentó!!.\n\n"
-            } else "$name ya no puede evolucionar más.\n\n"
+                println("$oldName ha evolucionado a $name!!. Su ataque aumentó!!.")
+            } else println("$name ya no puede evolucionar más.")
         }
     }
 

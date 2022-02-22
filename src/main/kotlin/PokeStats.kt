@@ -44,7 +44,7 @@ abstract class PokeStats
                 "\tTYPE: $type\n\n"
     }
 
-    fun saludo () : String {
+   /* fun saludo () : String {
         return "Hola, soy $name.\n\n"
     }
 
@@ -55,22 +55,10 @@ abstract class PokeStats
             return "$name se ha curado con $item. ${graciasPorLaCura()}\n"
         }
         return "$name no puede curarse [${currentHP} / $hp].\n\n"
-    }
+    }*/
 
     fun placaje () : Int {
         return (attack*0.6).toInt()
-    }
-
-
-
-    fun evolucionar () : String {
-        attack = (attack * 1.2).toInt()
-        val oldName = name
-        return if (contadorEvoluciones < Evoluciones.size) {
-            name = Evoluciones[contadorEvoluciones]
-            contadorEvoluciones += 1
-            "$oldName ha evolucionado a $name. Su ataque aumentó.\n\n"
-        } else "$name ya no puede evolucionar más.\n\n"
     }
 
     private fun graciasPorLaCura () : String {

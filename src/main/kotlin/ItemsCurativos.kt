@@ -1,3 +1,0 @@
-enum class ItemsCurativos {
-    BERRYJUICE, POTION, SUPERPOTION, FULLRESTORE
-}

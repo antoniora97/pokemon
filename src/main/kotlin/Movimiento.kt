@@ -5,8 +5,4 @@ class Movimiento(nombre:String,type:String, power:Int, accuracy:Int,PP:Int, efec
     val potencia:Int = power
     val tipo:String = type
     val precision:Int = accuracy
-    val poderPrecision:ArrayList<Int> = arrayListOf(power,accuracy)
-
-
-
 }
