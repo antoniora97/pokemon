@@ -3,6 +3,8 @@ interface IPlanta {
 
     var absorcion : Int
 
+    val comandos : Array<String> //lista de acciones que puede realizar el pokemon de planta
+
     //El pokemon recupera un porcentaje de vida
     fun absorber (enemyCurrentHP : Int) : Int
 

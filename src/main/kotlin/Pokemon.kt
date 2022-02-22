@@ -53,7 +53,7 @@ abstract class Pokemon
     }
 
     fun placaje () : Int {
-        return (attack*0.6).toInt()
+        return (attack*0.25).toInt()
     }
 
     fun recibirDanyo (danyo : Int) : String {
@@ -78,6 +78,9 @@ abstract class Pokemon
     private fun graciasPorLaCura () : String {
         return "Te da las gracias por la curita.\n"
     }
+
+    abstract fun ataqueEspecial1()
+    abstract fun ataqueEspecial2()
 }
 
 //(ataqueAtacante/defensaEnemigo) * potenciaAtaque*0.5*modificador + 1
