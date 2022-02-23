@@ -3,9 +3,10 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
   objetos: ArrayList<Objeto>, evasion:Int, estado:Int, velocidad:Int) :
     PokeStats(name, hp, attack, SpAttack, defense, SpDefense, type, Evoluciones, movimientos, objetos, evasion, estado, velocidad),
     Acciones{
+
     private var tipo:String = type
-    private var objeto:ArrayList<Objeto> = objetos
-    private val moves:ArrayList<Movimiento> = movimientos
+
+    //LISTO
     fun recibirDanyo (danyo : Int) : String {
         if (currentHP > 0) {
             currentHP -= danyo
@@ -14,26 +15,28 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
         }
         return "$name ya no puede recibir más daño."
     }
+
+    //LISTO
     fun Type():String{
         return tipo
     }
-    fun Objects():ArrayList<Objeto>{
-        return objeto
-    }
-    fun Movimientos():ArrayList<Movimiento>{
-        return moves
-    }
+
+    //LISTO
     fun HP() : Int {
         return hp
     }
 
+    //LISTO
     //Recibe la cantidad a curar del objeto y cura al pokemon
-    fun curar(recuperacion:Int){
-        currentHP += recuperacion
-        if (currentHP > hp) currentHP = hp
-        println("$name se ha curado $recuperacion puntos de vida ($currentHP/$hp).")
+    fun curar (recuperacion : Int){
+        if (recuperacion!=0) {
+            currentHP += recuperacion
+            if (currentHP > hp) currentHP = hp
+            println("$name se ha curado $recuperacion puntos de vida ($currentHP/$hp).")
+        }
     }
 
+    //LISTO
     fun ComprobarEstado(estado: Int){ //Aplica los efectos de los distintos estados:
         //1=Sumergido sube la evasion a 100 así no recibe daño
         //2=Quemado recibe 3 de daño cada turno
@@ -51,23 +54,77 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
         }
         if(estado==3){
             currentHP+=10
-            println("$name hace la fotosíntesis y se cura")
+            println("$name ha absorbido la vida del enemigo")
         }
+    }
 
+    //LISTO
+    override fun UsarObjeto() : Int{ //Devuelve a batalla la cantidad de salud
+        if (objetos.size!=0) {
+            while (true) {
+                print("$name tiene los siguientes objetos:\n")
+                showObjetos()
+                //le pedimos el objeto
+                print("Qué objeto le quieres dar? : ")
+                val nombreObjeto = readln().lowercase() // que va a recuperar el pokemon
+                //Buscamos la coincidencia
+                for (o in objetos) {
+                    if (nombreObjeto == o.nombre.lowercase()) {
+                        val curacion = o.curacion()
+                        objetos.remove(o)
+                        return curacion
+                    }
+                }
+                //si no se encuentra avisamos
+                print("Ese objeto no lo tiene $name.")
+            }
+        }
+        print("$name no tiene objetos para curarse.")
+        return 0
     }
-    override fun UsarObjeto(lista:ArrayList<Objeto>):Int{ //Devuelve a batalla la cantidad de salud
-        val curacion=objeto[(0..objeto.size-1).random()].curacion()                  // que va a recuperar el pokemon
-        println("Le has dado ${objeto[(0..objeto.size-1).random()].nombre()} a $name")
-        return curacion
+
+    //LISTO
+    override fun Atacar(): Map<String, String>{
+        print("$name tiene los siguientes ataques:\n")
+        showMovimientos()
+        var eleccion : Int = 0
+        var comprobador = false
+        while (!comprobador) {
+            print("Introduce el número del ataque: ")
+            eleccion = readln().toInt()
+            if (eleccion in 0 until movimientos.size) {
+                comprobador = true
+            } else {
+                print("\tERROR: ese movimiento no existe.")
+            }
+        }
+        val movimientoElegido : Movimiento = movimientos[eleccion]
+        val datosMovimiento : Map<String, String>
+        if (movimientoElegido.category=="Fisico") {
+            datosMovimiento =
+                mapOf(
+                    "potencia" to movimientoElegido.power.toString(),
+                    "tipo" to movimientoElegido.type,
+                    "precision" to movimientoElegido.accuracy.toString(),
+                    "efecto" to movimientoElegido.efecto.toString(),
+                    "categoria" to movimientoElegido.category
+                )
+        } else {
+            datosMovimiento =
+                mapOf(
+                    "potencia" to movimientoElegido.power.toString(),
+                    "tipo" to movimientoElegido.type,
+                    "precision" to movimientoElegido.accuracy.toString(),
+                    "efecto" to movimientoElegido.efecto.toString(),
+                    "categoria" to movimientoElegido.category
+                )
+        }
+        println("$name usó ${movimientoElegido.nombre}")
+        if (movimientoElegido.currentPP>0) movimientoElegido.currentPP -= 1
+        return datosMovimiento
     }
-    override fun Atacar(Movimientos:ArrayList<Movimiento>): ArrayList<String>{ //Anotación de la lista DatosMovimiento:
-        val eleccion:Movimiento = Movimientos.random() // 0=ATK actual, 1=Potencia Movimiento 2=Categoría 3=Tipo Movimiento
-        val DatosMovimiento:ArrayList<String>
-        if (eleccion.categoria=="Fisico"){ DatosMovimiento = arrayListOf(currenAttack.toString(),eleccion.potencia.toString(),eleccion.tipo,eleccion.precision.toString(),eleccion.efecto1.toString())}
-        else{DatosMovimiento = arrayListOf(currentSpAttack.toString(),eleccion.potencia.toString(),eleccion.tipo,eleccion.precision.toString(),eleccion.efecto1.toString())}
-        println("$name usó ${eleccion.nombre1}")       //3=Precision Movimiento 4=Efecto
-        return  DatosMovimiento
-    }
+
+    //LISTO
     override fun Evolucionar() { //Hace que el pokemon evolucione, le cambie el nombre,
         val oldName = name
         if (contadorEvoluciones < Evoluciones.size) {
@@ -79,7 +136,9 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
             "Bayleef"->{
                 val newHP:Int = 60
                 if (currentHP<hp){
-                    currentHP+=(newHP-hp) }
+                    currentHP+=(newHP-hp)
+                    hp = newHP
+                }
                 attack=62
                 defense=80
                 SpAttack=63
@@ -137,6 +196,27 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
             velocidad=78 }
         }
     }
+
+    //LISTO
+    //Muestra los movimientos que tiene el pokemon
+    private fun showMovimientos () {
+        var cont = 0
+        for (m in movimientos) {
+            print("$cont - ")
+            m.showMovimiento()
+            cont += 1
+        }
+    }
+
+    //LISTO
+    //Muestra los objetos curativos que tiene el pokemon
+    private fun showObjetos () {
+        for (o in objetos) {
+            print("\t${o.nombre} (cura ${o.curacion()} puntos de vida)\n")
+        }
+    }
+
+
 }
 
 

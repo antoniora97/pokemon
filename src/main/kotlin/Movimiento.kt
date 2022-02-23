@@ -1,9 +1,17 @@
-class Movimiento(nombre:String,type:String, category: String,  power:Int, accuracy:Int,PP:Int, efecto:Int) {
-    val efecto1:Int = efecto
-    val categoria: String = category
-    val nombre1:String = nombre
-    var PowerPoints:Int = PP
-    val potencia:Int = power
-    val tipo:String = type
-    val precision:Int = accuracy
+
+class Movimiento(val nombre: String,
+                 val type: String,
+                 val category: String,
+                 val power:Int,
+                 val accuracy:Int,
+                 val PP:Int,
+                 val efecto:Int) {
+
+    var currentPP = PP
+
+    fun showMovimiento () {
+        print("$nombre (${currentPP}/$PP)\n")
+    }
+
+
 }
