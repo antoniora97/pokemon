@@ -30,9 +30,10 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
     //Recibe la cantidad a curar del objeto y cura al pokemon
     fun curar (recuperacion : Int){
         if (recuperacion!=0) {
+            val HPactual:Int = currentHP
             currentHP += recuperacion
             if (currentHP > hp) currentHP = hp
-            println("$name se ha curado $recuperacion puntos de vida ($currentHP/$hp).")
+            println("$name se ha curado ${currentHP-HPactual} puntos de vida ($currentHP/$hp).")
         }
     }
 
@@ -41,16 +42,13 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
         //1=Sumergido sube la evasion a 100 así no recibe daño
         //2=Quemado recibe 3 de daño cada turno
         //3=Fotosintesis se cura 10 de vida
-        if(estado==0){
-            evasion-=95
-        }
         if(estado==1){
             evasion+=95
             println("$name se ha sumergido!!")
         }
         if(estado==2){
             currentHP-=3
-            println("$name se ha quemado!!")
+            println("$name se ha quemado!!, $name recibe 3 puntos de daño debido a la quemadura")
         }
         if(estado==3){
             currentHP+=10
@@ -138,7 +136,8 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
                 if (currentHP<hp){
                     currentHP+=(newHP-hp)
                     hp = newHP
-                }
+                }else{currentHP=newHP
+                    hp=newHP}
                 attack=62
                 defense=80
                 SpAttack=63
@@ -149,6 +148,8 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
             if (currentHP<hp){
                 currentHP+=(newHP-hp)
                 hp=newHP }
+            else{currentHP=newHP
+                hp=newHP}
             attack=82
             defense=100
             SpAttack=83
@@ -159,6 +160,8 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
             if (currentHP<hp){
                 currentHP+=(newHP-hp)
                 hp=newHP }
+            else{currentHP=newHP
+                hp=newHP}
             attack=64
             defense=58
             SpAttack=80
@@ -169,6 +172,8 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
             if (currentHP<hp){
                 currentHP+=(newHP-hp)
                 hp=newHP }
+            else{currentHP=newHP
+                hp=newHP}
             attack=84
             defense=78
             SpAttack=109
@@ -179,16 +184,20 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
             if (currentHP<hp){
                 currentHP+=(newHP-hp)
                 hp=newHP }
+            else{currentHP=newHP
+                hp=newHP}
             attack=80
             defense=80
             SpAttack=59
             SpDefense=63
             velocidad=58 }
-        "Feraligtr"->{
+        "Feraligatr"->{
             val newHP:Int = 85
             if (currentHP<hp){
                 currentHP+=(newHP-hp)
                 hp=newHP }
+            else{currentHP=newHP
+                hp=newHP}
             attack=105
             defense=100
             SpAttack=79

@@ -1,11 +1,4 @@
 
-// HEALING ITEMS
-val restoringItems : Map<String, Int> = mapOf(
-    "berryjuice" to 10,
-    "potion" to 30,
-    "superPotion" to 50,
-    "fullrestore" to 1000)
-/* ********** */
 
 abstract class PokeStats
     (
@@ -40,27 +33,5 @@ abstract class PokeStats
                 "\tDEFENSE: $defense\n" +
                 "\tTYPE: $type\n\n"
     }
-
-   /* fun saludo () : String {
-        return "Hola, soy $name.\n\n"
-    }
-
-    fun curar (item : ItemsCurativos) : String {
-        if (currentHP < hp) {
-            currentHP += restoringItems[item.toString().lowercase()]!!
-            if (currentHP > hp) currentHP = hp
-            return "$name se ha curado con $item. ${graciasPorLaCura()}\n"
-        }
-        return "$name no puede curarse [${currentHP} / $hp].\n\n"
-    }*/
-
-    fun placaje () : Int {
-        return (attack*0.6).toInt()
-    }
-
-    private fun graciasPorLaCura () : String {
-        return "Te da las gracias por la curita.\n"
-    }
 }
 
-//(ataqueAtacante/defensaEnemigo) * potenciaAtaque*0.5*modificador + 1

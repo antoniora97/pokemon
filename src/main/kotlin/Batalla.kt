@@ -25,14 +25,15 @@ class Batalla(val pokemon1 : Pokemon, val pokemon2 : Pokemon) {
 
     //LISTO
     private fun ejecutarAccion (atacante: Pokemon, enemigo: Pokemon) {
+        if (atacante.estado==2) {atacante.ComprobarEstado(atacante.estado)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
+        if (atacante.estado==1) {
+            atacante.evasion-95
+            print("${atacante.name} ha salido del Agua\n")}
+        atacante.estado=0
         print("Qué debería hacer ${atacante.name}:\n")
         print("\tAtacar.\n\tUsar objeto.\n\tEvolucionar.\n\t > ")
         val accion : String = readln()
         var danio : Int = 0
-
-        if (atacante.estado==2) {atacante.ComprobarEstado(atacante.estado)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
-        atacante.estado=0
-
         when (accion.lowercase()) {
             "atacar" -> {
                 val datos = atacante.Atacar()
