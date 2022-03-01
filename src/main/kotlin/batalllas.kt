@@ -1,0 +1,1 @@
+var bat1 = Batalla(chikorita,totodile,-1,-1)
