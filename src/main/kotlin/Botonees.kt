@@ -3,7 +3,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,16 +13,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun pantallaMovimientos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit){
+fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit,actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit){
     var Borde1 = Color.Red
     var Borde2 = Color.Red
     var Borde3 = Color.Red
+    var pp1:Int by remember { mutableStateOf(bat1.pokemon1.movimientos[0].currentPP) }
+    var pp2:Int by remember { mutableStateOf(bat1.pokemon1.movimientos[1].currentPP) }
+    var pp3:Int by remember { mutableStateOf(bat1.pokemon1.movimientos[2].currentPP) }
     var accion by remember { mutableStateOf(-1) }
     var pantallaSeleccionada2 by remember { mutableStateOf(0) }
     val cambiarPantalla2:(Int)->Unit = {pantallaSeleccionada2 = it}
+    val actualizarPP1:(Int)->Unit = { pp1= it}
+    val actualizarPP2:(Int)->Unit = { pp2= it}
+    val actualizarPP3:(Int)->Unit = { pp3= it}
+    var contador by remember { mutableStateOf(1) }
+    val bloquearPantalla2:(Int)->Unit = {contador = it}
+
+
     when(pantallaSeleccionada2){
         1->descripcionCombate(cambiarPantalla2,accion)
-        2->Efecitividad(cambiarPantalla,accion)
+        2->Efectividad(cambiarPantalla,accion)
     }
     when(bat1.pokemon1.movimientos[0].type){
         "Agua" -> Borde1 = Color.Blue
@@ -43,6 +52,7 @@ fun pantallaMovimientos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit
         "Planta" -> Borde3 = Color.Green
         "Normal" -> Borde3 = Color.Gray
     }
+
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp),
         horizontalAlignment = Alignment.Start)
     {
@@ -51,7 +61,7 @@ fun pantallaMovimientos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit
         ) {
             Column(modifier = Modifier.size(width = 256.dp, height = 192.dp).offset(-2.dp,-42.dp),
                 horizontalAlignment = Alignment.Start) {
-                OutlinedButton(modifier = Modifier.offset(5.dp, 198.dp)
+                OutlinedButton(modifier = Modifier.offset(5.dp, 200.dp)
                     .size(width = 155.dp, height = 55.dp),
                     border = BorderStroke(
                         width = 2.dp,
@@ -69,16 +79,19 @@ fun pantallaMovimientos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit
                     onClick = {
                         accion = 0
                         bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,accion,0)
-                        cambiarPantalla2(1)}
-
-
+                        cambiarPantalla2(1)
+                        actualizarVida2(bat1.pokemon2.currentHP)
+                        actualizarPP1(bat1.pokemon1.movimientos[0].currentPP)
+                      bloquearPantalla(0)
+                      bloquearPantalla2(0)} ,
+                enabled = contador==1
                 ) {
                     Text(
-                        "${bat1.pokemon1.movimientos[0].nombre}  ${bat1.pokemon1.movimientos[0].currentPP}/${bat1.pokemon1.movimientos[0].PP}\n ${bat1.pokemon1.movimientos[0].type}"
+                        "${bat1.pokemon1.movimientos[0].nombre}  $pp1/${bat1.pokemon1.movimientos[0].PP}\n ${bat1.pokemon1.movimientos[0].type}"
                                 , color = Color.Black, fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
-                OutlinedButton(modifier = Modifier.offset(5.dp, 198.dp)
+                OutlinedButton(modifier = Modifier.offset(5.dp, 200.dp)
                     .size(width = 155.dp, height = 55.dp),
                     border = BorderStroke(
                         width = 2.dp,
@@ -96,14 +109,19 @@ fun pantallaMovimientos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit
                     onClick = {
                         accion = 1
                         bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,0,1)
-                        cambiarPantalla2(1)}
+                        cambiarPantalla2(1)
+                        actualizarVida2(bat1.pokemon2.currentHP)
+                        actualizarPP2(bat1.pokemon1.movimientos[1].currentPP)
+                        bloquearPantalla2(0)
+                        bloquearPantalla(0)},
+                    enabled = contador==1
                 ) {
                     Text(
-                        "${bat1.pokemon1.movimientos[1].nombre}  ${bat1.pokemon1.movimientos[1].currentPP}/${bat1.pokemon1.movimientos[1].PP}\n ${bat1.pokemon1.movimientos[1].type}"
+                        "${bat1.pokemon1.movimientos[1].nombre}  $pp2/${bat1.pokemon1.movimientos[1].PP}\n ${bat1.pokemon1.movimientos[1].type}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
-                OutlinedButton(modifier = Modifier.offset(5.dp, 198.dp)
+                OutlinedButton(modifier = Modifier.offset(5.dp, 200.dp)
                     .size(width = 155.dp, height = 55.dp),
                     border = BorderStroke(
                         width = 2.dp,
@@ -119,12 +137,18 @@ fun pantallaMovimientos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit
                         backgroundColor = Color.LightGray
                     ),
                     onClick = {
+
                         accion = 2
                         bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,0,2)
-                        cambiarPantalla2(1)}
+                        cambiarPantalla2(1)
+                        actualizarVida2(bat1.pokemon2.currentHP)
+                        actualizarPP3(bat1.pokemon1.movimientos[2].currentPP)
+                        bloquearPantalla(0)
+                        bloquearPantalla2(0)},
+                    enabled = contador==1
                 ) {
                     Text(
-                        "${bat1.pokemon1.movimientos[2].nombre} ${bat1.pokemon1.movimientos[2].currentPP}/${bat1.pokemon1.movimientos[2].PP}\n ${bat1.pokemon1.movimientos[2].type}"
+                        "${bat1.pokemon1.movimientos[2].nombre} $pp3/${bat1.pokemon1.movimientos[2].PP}\n ${bat1.pokemon1.movimientos[2].type}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -134,11 +158,21 @@ fun pantallaMovimientos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit
 
 }
 @Composable
-fun pantallaObjetos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit){
-    when (bat1.pokemon1.objetos.size) {
-        1 -> pantallaObjetosSingular()
-        2 -> pantallaObjetosMedia()
-        3 -> pantallaObjetosCompleta()
+fun pantallaObjetos(bloquearPantalla:(Int)->Unit,actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit){
+    var bolsa by remember { mutableStateOf(bat1.pokemon1.objetos1.size) }
+    val cambiarPantallaObj:(Int)->Unit = {bolsa = it}
+    var objetoUsado by remember { mutableStateOf(0) }
+    val seleccionarObjeto:(Int)->Unit = {objetoUsado = it}
+    when (objetoUsado){
+        1->usoObjeto(actualizarVida,cambiarPantalla,0)
+        2->usoObjeto(actualizarVida,cambiarPantalla,1)
+        3->usoObjeto(actualizarVida,cambiarPantalla,2)
+    }
+
+    when (bolsa) {
+        1 -> pantallaObjetosSingular(seleccionarObjeto,cambiarPantallaObj,bloqueo,bloquearPantalla)
+        2 -> pantallaObjetosMedia(seleccionarObjeto,cambiarPantallaObj,bloqueo,bloquearPantalla)
+        3 ->  pantallaObjetosCompleta(seleccionarObjeto,cambiarPantallaObj,bloqueo,bloquearPantalla)
         else -> Text("${bat1.pokemon1.name} no tiene objetos.",
             modifier = Modifier
                 .offset(5.dp, 198.dp)
@@ -146,7 +180,7 @@ fun pantallaObjetos(cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit){
     }
 }
 @Composable
-fun pantallaObjetosSingular () {
+fun pantallaObjetosSingular (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(Int)->Unit,bloqueo:Bloqueo,bloquearPantalla:(Int)->Unit) {
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp),
         horizontalAlignment = Alignment.Start)
     {
@@ -170,10 +204,15 @@ fun pantallaObjetosSingular () {
                         backgroundColor = Color.LightGray
                     ),
                     shape = CutCornerShape(0),
-                    onClick = { bat1.pokemon1.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        seleccionarObjeto(1)
+                        cambiarPantallaObj(0)
+                        },
+                    enabled = bloqueo.bloqueo1==true
                 ) {
                     Text(
-                        "${bat1.pokemon1.objetos[0].nombre}     ${bat1.pokemon1.objetos[0].salud}"
+                        "${bat1.pokemon1.objetos1[0].nombre}     ${bat1.pokemon1.objetos1[0].salud}"
                         , color = Color.Black, fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -182,7 +221,7 @@ fun pantallaObjetosSingular () {
     }
 }
 @Composable
-fun pantallaObjetosMedia () {
+fun pantallaObjetosMedia (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(Int)->Unit,bloqueo:Bloqueo,bloquearPantalla:(Int)->Unit) {
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp),
         horizontalAlignment = Alignment.Start)
     {
@@ -206,10 +245,17 @@ fun pantallaObjetosMedia () {
                         backgroundColor = Color.LightGray
                     ),
                     shape = CutCornerShape(0),
-                    onClick = { bat1.pokemon1.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        cambiarPantallaObj(1)
+                        bloqueo.bloqueo1=false
+                        seleccionarObjeto(1)
+                        },
+                    enabled = bloqueo.bloqueo1==true
+
                 ) {
                     Text(
-                        "${bat1.pokemon1.objetos[0].nombre}     ${bat1.pokemon1.objetos[0].salud}"
+                        "${bat1.pokemon1.objetos1[0].nombre}     ${bat1.pokemon1.objetos1[0].salud}"
                         , color = Color.Black, fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -228,10 +274,17 @@ fun pantallaObjetosMedia () {
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.LightGray
                     ),
-                    onClick = { bat1.pokemon1.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        cambiarPantallaObj(1)
+                        bloqueo.bloqueo1=false
+                        seleccionarObjeto(2)
+
+                        },
+                    enabled = bloqueo.bloqueo1==true
                 ) {
                     Text(
-                        "${bat1.pokemon1.objetos[1].nombre}     ${bat1.pokemon1.objetos[1].salud}"
+                        "${bat1.pokemon1.objetos1[1].nombre}     ${bat1.pokemon1.objetos1[1].salud}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -240,9 +293,9 @@ fun pantallaObjetosMedia () {
     }
 }
 @Composable
-fun pantallaObjetosCompleta () {
+fun pantallaObjetosCompleta (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(Int)->Unit,bloqueo:Bloqueo,bloquearPantalla:(Int)->Unit) {
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp),
-        horizontalAlignment = Alignment.Start)
+    horizontalAlignment = Alignment.Start)
     {
         Box(
             modifier = Modifier.size(width = 256.dp, height = 192.dp)
@@ -264,10 +317,14 @@ fun pantallaObjetosCompleta () {
                         backgroundColor = Color.LightGray
                     ),
                     shape = CutCornerShape(0),
-                    onClick = { bat1.pokemon1.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        cambiarPantallaObj(2)
+                        seleccionarObjeto(1)
+                        },
                 ) {
                     Text(
-                        "${bat1.pokemon1.objetos[0].nombre}     ${bat1.pokemon1.objetos[0].salud}"
+                        "${bat1.pokemon1.objetos1[0].nombre}     ${bat1.pokemon1.objetos1[0].salud}"
                         , color = Color.Black, fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -286,10 +343,14 @@ fun pantallaObjetosCompleta () {
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.LightGray
                     ),
-                    onClick = { bat1.pokemon1.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        cambiarPantallaObj(2)
+                        seleccionarObjeto(2)
+                        },
                 ) {
                     Text(
-                        "${bat1.pokemon1.objetos[1].nombre}     ${bat1.pokemon1.objetos[1].salud}"
+                        "${bat1.pokemon1.objetos1[1].nombre}     ${bat1.pokemon1.objetos1[1].salud}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -308,10 +369,14 @@ fun pantallaObjetosCompleta () {
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.LightGray
                     ),
-                    onClick = { bat1.pokemon1.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        cambiarPantallaObj(2)
+                        seleccionarObjeto(3)
+                        },
                 ) {
                     Text(
-                        "${bat1.pokemon1.objetos[2].nombre}     ${bat1.pokemon1.objetos[2].salud}"
+                        "${bat1.pokemon1.objetos1[2].nombre}     ${bat1.pokemon1.objetos1[2].salud}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -320,16 +385,26 @@ fun pantallaObjetosCompleta () {
     }
 }
 @Composable
-fun pantallaMovimientos2(cambiarPantalla1:(Int)->Unit){
+fun pantallaMovimientos2(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit,actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit){
     var Borde1 = Color.Red
     var Borde2 = Color.Red
     var Borde3 = Color.Red
-    var accion2 by remember { mutableStateOf(-1) }
-    var pantallaSeleccionada3 by remember { mutableStateOf(0) }
-    val cambiarPantalla3:(Int)->Unit = {pantallaSeleccionada3 = it}
-    when(pantallaSeleccionada3){
-        1->descripcionCombate2(cambiarPantalla3,accion2)
-        2->Efecitividad2(cambiarPantalla3,accion2)
+    var pp1:Int by remember { mutableStateOf(bat1.pokemon2.movimientos[0].currentPP) }
+    var pp2:Int by remember { mutableStateOf(bat1.pokemon2.movimientos[1].currentPP) }
+    var pp3:Int by remember { mutableStateOf(bat1.pokemon2.movimientos[2].currentPP) }
+    var accion by remember { mutableStateOf(-1) }
+    var pantallaSeleccionada2 by remember { mutableStateOf(0) }
+    val cambiarPantalla2:(Int)->Unit = {pantallaSeleccionada2 = it}
+    val actualizarPP1:(Int)->Unit = { pp1= it}
+    val actualizarPP2:(Int)->Unit = { pp2= it}
+    val actualizarPP3:(Int)->Unit = { pp3= it}
+    var contador by remember { mutableStateOf(1) }
+    val bloquearPantalla2:(Int)->Unit = {contador = it}
+
+
+    when(pantallaSeleccionada2){
+        1->descripcionCombate2(cambiarPantalla2,accion)
+        2->Efectividad2(cambiarPantalla,accion)
     }
     when(bat1.pokemon2.movimientos[0].type){
         "Agua" -> Borde1 = Color.Blue
@@ -349,6 +424,7 @@ fun pantallaMovimientos2(cambiarPantalla1:(Int)->Unit){
         "Planta" -> Borde3 = Color.Green
         "Normal" -> Borde3 = Color.Gray
     }
+
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp),
         horizontalAlignment = Alignment.Start)
     {
@@ -357,7 +433,7 @@ fun pantallaMovimientos2(cambiarPantalla1:(Int)->Unit){
         ) {
             Column(modifier = Modifier.size(width = 256.dp, height = 192.dp).offset(-2.dp,-42.dp),
                 horizontalAlignment = Alignment.Start) {
-                OutlinedButton(modifier = Modifier.offset(5.dp, 198.dp)
+                OutlinedButton(modifier = Modifier.offset(5.dp, 200.dp)
                     .size(width = 155.dp, height = 55.dp),
                     border = BorderStroke(
                         width = 2.dp,
@@ -373,18 +449,21 @@ fun pantallaMovimientos2(cambiarPantalla1:(Int)->Unit){
                     ),
                     shape = CutCornerShape(0),
                     onClick = {
-                        accion2 = 0
-                        bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,accion2,0)
-                        cambiarPantalla3(1)}
-
-
+                        accion = 0
+                        bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,accion,0)
+                        cambiarPantalla2(1)
+                        actualizarVida2(bat1.pokemon1.currentHP)
+                        actualizarPP1(bat1.pokemon2.movimientos[0].currentPP)
+                        bloquearPantalla(0)
+                        bloquearPantalla2(0)} ,
+                    enabled = contador==1
                 ) {
                     Text(
-                        "${bat1.pokemon2.movimientos[0].nombre}  ${bat1.pokemon2.movimientos[0].currentPP}/${bat1.pokemon2.movimientos[0].PP}\n ${bat1.pokemon2.movimientos[0].type}"
+                        "${bat1.pokemon2.movimientos[0].nombre}  $pp1/${bat1.pokemon2.movimientos[0].PP}\n ${bat1.pokemon2.movimientos[0].type}"
                         , color = Color.Black, fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
-                OutlinedButton(modifier = Modifier.offset(5.dp, 198.dp)
+                OutlinedButton(modifier = Modifier.offset(5.dp, 200.dp)
                     .size(width = 155.dp, height = 55.dp),
                     border = BorderStroke(
                         width = 2.dp,
@@ -400,16 +479,21 @@ fun pantallaMovimientos2(cambiarPantalla1:(Int)->Unit){
                         backgroundColor = Color.LightGray
                     ),
                     onClick = {
-                        accion2 = 1
+                        accion = 1
                         bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,0,1)
-                        cambiarPantalla3(1)}
+                        cambiarPantalla2(1)
+                        actualizarVida2(bat1.pokemon1.currentHP)
+                        actualizarPP2(bat1.pokemon2.movimientos[1].currentPP)
+                        bloquearPantalla2(0)
+                        bloquearPantalla(0)},
+                    enabled = contador==1
                 ) {
                     Text(
-                        "${bat1.pokemon2.movimientos[1].nombre}  ${bat1.pokemon2.movimientos[1].currentPP}/${bat1.pokemon2.movimientos[1].PP}\n ${bat1.pokemon2.movimientos[1].type}"
+                        "${bat1.pokemon2.movimientos[1].nombre}  $pp2/${bat1.pokemon2.movimientos[1].PP}\n ${bat1.pokemon2.movimientos[1].type}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
-                OutlinedButton(modifier = Modifier.offset(5.dp, 198.dp)
+                OutlinedButton(modifier = Modifier.offset(5.dp, 200.dp)
                     .size(width = 155.dp, height = 55.dp),
                     border = BorderStroke(
                         width = 2.dp,
@@ -425,12 +509,18 @@ fun pantallaMovimientos2(cambiarPantalla1:(Int)->Unit){
                         backgroundColor = Color.LightGray
                     ),
                     onClick = {
-                        accion2 = 2
+
+                        accion = 2
                         bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,0,2)
-                        cambiarPantalla3(1)}
+                        cambiarPantalla2(1)
+                        actualizarVida2(bat1.pokemon1.currentHP)
+                        actualizarPP3(bat1.pokemon2.movimientos[2].currentPP)
+                        bloquearPantalla(0)
+                        bloquearPantalla2(0)},
+                    enabled = contador==1
                 ) {
                     Text(
-                        "${bat1.pokemon2.movimientos[2].nombre} ${bat1.pokemon2.movimientos[2].currentPP}/${bat1.pokemon2.movimientos[2].PP}\n ${bat1.pokemon2.movimientos[2].type}"
+                        "${bat1.pokemon2.movimientos[2].nombre} $pp3/${bat1.pokemon2.movimientos[2].PP}\n ${bat1.pokemon2.movimientos[2].type}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -439,11 +529,21 @@ fun pantallaMovimientos2(cambiarPantalla1:(Int)->Unit){
     }
 }
 @Composable
-fun pantallaObjetos2(cambiarPantalla1:(Int)->Unit){
-    when (bat1.pokemon2.objetos.size) {
-        1 -> pantallaObjetosSingular2()
-        2 -> pantallaObjetosMedia2()
-        3 -> pantallaObjetosCompleta2()
+fun pantallaObjetos2(bloquearPantalla:(Int)->Unit,actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit){
+    var bolsa by remember { mutableStateOf(bat1.pokemon2.objetos1.size) }
+    val cambiarPantallaObj:(Int)->Unit = {bolsa = it}
+    var objetoUsado by remember { mutableStateOf(0) }
+    val seleccionarObjeto:(Int)->Unit = {objetoUsado = it}
+    when (objetoUsado){
+        1->usoObjeto2(actualizarVida,cambiarPantalla,0)
+        2->usoObjeto2(actualizarVida,cambiarPantalla,1)
+        3->usoObjeto2(actualizarVida,cambiarPantalla,2)
+    }
+
+    when (bolsa) {
+        1 -> pantallaObjetosSingular2(seleccionarObjeto,cambiarPantallaObj,bloqueo,bloquearPantalla)
+        2 -> pantallaObjetosMedia2(seleccionarObjeto,cambiarPantallaObj,bloqueo,bloquearPantalla)
+        3 ->  pantallaObjetosCompleta2(seleccionarObjeto,cambiarPantallaObj,bloqueo,bloquearPantalla)
         else -> Text("${bat1.pokemon2.name} no tiene objetos.",
             modifier = Modifier
                 .offset(5.dp, 198.dp)
@@ -451,7 +551,7 @@ fun pantallaObjetos2(cambiarPantalla1:(Int)->Unit){
     }
 }
 @Composable
-fun pantallaObjetosSingular2 () {
+fun pantallaObjetosSingular2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(Int)->Unit,bloqueo:Bloqueo,bloquearPantalla:(Int)->Unit) {
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp),
         horizontalAlignment = Alignment.Start)
     {
@@ -475,10 +575,15 @@ fun pantallaObjetosSingular2 () {
                         backgroundColor = Color.LightGray
                     ),
                     shape = CutCornerShape(0),
-                    onClick = { bat1.pokemon2.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        seleccionarObjeto(1)
+                        cambiarPantallaObj(0)
+                    },
+                    enabled = bloqueo.bloqueo1==true
                 ) {
                     Text(
-                        "${bat1.pokemon2.objetos[0].nombre}     ${bat1.pokemon2.objetos[0].salud}"
+                        "${bat1.pokemon2.objetos1[0].nombre}     ${bat1.pokemon2.objetos1[0].salud}"
                         , color = Color.Black, fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -487,7 +592,7 @@ fun pantallaObjetosSingular2 () {
     }
 }
 @Composable
-fun pantallaObjetosMedia2 () {
+fun pantallaObjetosMedia2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(Int)->Unit,bloqueo:Bloqueo,bloquearPantalla:(Int)->Unit) {
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp),
         horizontalAlignment = Alignment.Start)
     {
@@ -511,10 +616,18 @@ fun pantallaObjetosMedia2 () {
                         backgroundColor = Color.LightGray
                     ),
                     shape = CutCornerShape(0),
-                    onClick = { bat1.pokemon2.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        cambiarPantallaObj(1)
+                        bloqueo.bloqueo1=false
+                        seleccionarObjeto(1)
+
+                    },
+                    enabled = bloqueo.bloqueo1==true
+
                 ) {
                     Text(
-                        "${bat1.pokemon2.objetos[0].nombre}     ${bat1.pokemon2.objetos[0].salud}"
+                        "${bat1.pokemon1.objetos1[0].nombre}     ${bat1.pokemon1.objetos1[0].salud}"
                         , color = Color.Black, fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -533,10 +646,16 @@ fun pantallaObjetosMedia2 () {
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.LightGray
                     ),
-                    onClick = { bat1.pokemon2.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        cambiarPantallaObj(1)
+                        bloqueo.bloqueo1=false
+                        seleccionarObjeto(2)
+                    },
+                    enabled = bloqueo.bloqueo1==true
                 ) {
                     Text(
-                        "${bat1.pokemon2.objetos[1].nombre}     ${bat1.pokemon2.objetos[1].salud}"
+                        "${bat1.pokemon2.objetos1[1].nombre}     ${bat1.pokemon2.objetos1[1].salud}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -545,7 +664,7 @@ fun pantallaObjetosMedia2 () {
     }
 }
 @Composable
-fun pantallaObjetosCompleta2 () {
+fun pantallaObjetosCompleta2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(Int)->Unit,bloqueo:Bloqueo,bloquearPantalla:(Int)->Unit) {
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp),
         horizontalAlignment = Alignment.Start)
     {
@@ -569,10 +688,15 @@ fun pantallaObjetosCompleta2 () {
                         backgroundColor = Color.LightGray
                     ),
                     shape = CutCornerShape(0),
-                    onClick = { bat1.pokemon2.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        seleccionarObjeto(1)
+                        bloqueo.bloqueo1=false
+                        cambiarPantallaObj(2)
+                    },
                 ) {
                     Text(
-                        "${bat1.pokemon2.objetos[0].nombre}     ${bat1.pokemon2.objetos[0].salud}"
+                        "${bat1.pokemon2.objetos1[0].nombre}     ${bat1.pokemon2.objetos1[0].salud}"
                         , color = Color.Black, fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -591,10 +715,15 @@ fun pantallaObjetosCompleta2 () {
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.LightGray
                     ),
-                    onClick = { bat1.pokemon2.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        seleccionarObjeto(2)
+                        bloqueo.bloqueo1=false
+                        cambiarPantallaObj(2)
+                    },
                 ) {
                     Text(
-                        "${bat1.pokemon2.objetos[1].nombre}     ${bat1.pokemon2.objetos[1].salud}"
+                        "${bat1.pokemon2.objetos1[1].nombre}     ${bat1.pokemon2.objetos1[1].salud}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
@@ -613,25 +742,31 @@ fun pantallaObjetosCompleta2 () {
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.LightGray
                     ),
-                    onClick = { bat1.pokemon2.Evolucionar() }
+                    onClick = {
+                        bloquearPantalla(0)
+                        seleccionarObjeto(3)
+                        cambiarPantallaObj(2)
+                    },
                 ) {
                     Text(
-                        "${bat1.pokemon2.objetos[2].nombre}     ${bat1.pokemon2.objetos[2].salud}"
+                        "${bat1.pokemon2.objetos1[2].nombre}     ${bat1.pokemon2.objetos1[2].salud}"
                         ,color = Color.Black,fontSize = 10.sp, textAlign = TextAlign.Start
                     )
                 }
             }
-        }}}
+        }
+    }
+}
         @Composable
         fun descripcionCombate(cambiarPantalla2:(Int)->Unit,accion:Int){
-            Column(modifier = Modifier.size(256.dp,30.dp).offset(15.dp,115.dp).clickable { cambiarPantalla2(2) }){
+            Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable { cambiarPantalla2(2) }){
               Text("${bat1.pokemon1.name} usó ${bat1.pokemon1.movimientos[accion].nombre}",color = Color.Black,fontSize = 10.sp)}
               if (bat1.pokemon1.movimientos[accion].efecto!=0){
                   Column(modifier = Modifier.size(256.dp,30.dp).offset(135.dp,115.dp)){
                   when(bat1.pokemon1.movimientos[accion].efecto){
-                      1 -> Text("${bat1.pokemon1.name} se ha sumergido",color = Color.Black,fontSize = 10.sp, modifier = Modifier.offset(-120.dp,10.dp))
-                      2 -> Text("${bat1.pokemon2.name} se ha quemado",color = Color.Black,fontSize = 10.sp, modifier = Modifier.offset(-120.dp,10.dp))
-                      3 -> {Text("${bat1.pokemon1.name} ha absorbido vida a ${bat1.pokemon2.name}",color = Color.Black,fontSize = 10.sp,modifier = Modifier.offset(-120.dp,10.dp))
+                      1 -> Text("${bat1.pokemon1.name} se ha sumergido",color = Color.Black,fontSize = 10.sp, modifier = Modifier.offset(-125.dp,25.dp))
+                      2 -> Text("${bat1.pokemon2.name} se ha quemado",color = Color.Black,fontSize = 10.sp, modifier = Modifier.offset(-125.dp,25.dp))
+                      3 -> {Text("${bat1.pokemon1.name} ha absorbido vida a ${bat1.pokemon2.name}",color = Color.Black,fontSize = 10.sp,modifier = Modifier.offset(-125.dp,25.dp))
                   }}
               }
             }
@@ -639,20 +774,20 @@ fun pantallaObjetosCompleta2 () {
 
         @Composable
         fun descripcionCombate2(cambiarPantalla3:(Int)->Unit,accion:Int){
-            Column(modifier = Modifier.size(256.dp,30.dp).offset(15.dp,115.dp).clickable { cambiarPantalla3(2) }){
+            Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable { cambiarPantalla3(2) }){
             Text("${bat1.pokemon2.name} usó ${bat1.pokemon2.movimientos[accion].nombre}",color = Color.Black,fontSize = 10.sp)}
             if (bat1.pokemon2.movimientos[accion].efecto!=0){
                 Column(modifier = Modifier.size(256.dp,30.dp).offset(135.dp,115.dp)){
                     when(bat1.pokemon2.movimientos[accion].efecto){
-                        1 -> Text("${bat1.pokemon2.name} se ha sumergido",color = Color.Black,fontSize = 10.sp, modifier = Modifier.offset(-120.dp,10.dp))
-                        2 -> Text("${bat1.pokemon1.name} se ha quemado",color = Color.Black,fontSize = 10.sp, modifier = Modifier.offset(-120.dp,10.dp))
-                        3 -> {Text("${bat1.pokemon2.name} ha absorbido vida a ${bat1.pokemon1.name}",color = Color.Black,fontSize = 10.sp,modifier = Modifier.offset(-120.dp,10.dp))
+                        1 -> Text("${bat1.pokemon2.name} se ha sumergido",color = Color.Black,fontSize = 10.sp, modifier = Modifier.offset(-125.dp,25.dp))
+                        2 -> Text("${bat1.pokemon1.name} se ha quemado",color = Color.Black,fontSize = 10.sp, modifier = Modifier.offset(-125.dp,25.dp))
+                        3 -> {Text("${bat1.pokemon2.name} ha absorbido vida a ${bat1.pokemon1.name}",color = Color.Black,fontSize = 10.sp,modifier = Modifier.offset(-125.dp,25.dp))
                         }}
                 }
             }
         }
         @Composable
-        fun Efecitividad(cambiarPantalla:(Int)->Unit,accion:Int){
+        fun Efectividad(cambiarPantalla:(Int)->Unit,accion:Int){
             Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable { cambiarPantalla(3) })
             {
                 if (bat1.ComprobarEfectividad(bat1.pokemon1.movimientos[accion].type, bat1.pokemon2.Type()) == 2.0) {
@@ -673,7 +808,7 @@ fun pantallaObjetosCompleta2 () {
             }
         }
         @Composable
-        fun Efecitividad2(cambiarPantalla:(Int)->Unit,accion:Int){
+        fun Efectividad2(cambiarPantalla:(Int)->Unit,accion:Int){
             Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable { cambiarPantalla(2) })
             {
                 if (bat1.ComprobarEfectividad(bat1.pokemon2.movimientos[accion].type, bat1.pokemon1.Type()) == 2.0) {
@@ -694,6 +829,26 @@ fun pantallaObjetosCompleta2 () {
                 }
             }
         }
+    @Composable
+    fun usoObjeto(actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit, eleccion:Int){
+        Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable {
+            bloqueo.bloqueo1=true
+            cambiarPantalla(3)
+        }){
+            Text("Le has dado ${bat1.pokemon1.objetos1[eleccion].nombre} a ${bat1.pokemon1.name}",color = Color.Black,fontSize = 10.sp)
+            bat1.RecibirObjeto(bat1.pokemon1,bat1.pokemon1.UsarObjeto(eleccion))
+            actualizarVida(bat1.pokemon1.currentHP)
+    }}
+@Composable
+fun usoObjeto2(actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit,eleccion:Int){
+    Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable {
+        bloqueo.bloqueo1=true
+        cambiarPantalla(2)
+    }){
+        Text("Le has dado ${bat1.pokemon2.objetos1[eleccion].nombre} a ${bat1.pokemon2.name}",color = Color.Black,fontSize = 10.sp)
+        bat1.RecibirObjeto(bat1.pokemon2,bat1.pokemon2.UsarObjeto(eleccion))
+        actualizarVida(bat1.pokemon2.currentHP)
+    }}
 
 
 

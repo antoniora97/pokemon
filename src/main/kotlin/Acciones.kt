@@ -2,7 +2,7 @@
 interface Acciones {
 
     fun Atacar(eleccion: Int) : Map<String, String>
-    fun UsarObjeto() : Int
+    fun UsarObjeto(Indice:Int) : Int
     fun Evolucionar()
 
 }

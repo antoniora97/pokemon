@@ -5,21 +5,9 @@ class Batalla(val pokemon1 : Pokemon, val pokemon2 : Pokemon, var accion:Int,var
     var pokemonAtacaPrimero = pokemon1
     var pokemonAtacaSegundo = pokemon2
 
-    fun turnos(){
-        if (pokemonAtacaPrimero.currentHP>0) {
-            ejecutarAccion(pokemonAtacaPrimero, pokemonAtacaSegundo, accion, eleccion) //TURNO DEL POKEMON QUE ATACA PRIMERO
-        } else {
-            print("${pokemonAtacaPrimero.name} se ha debilitado.\n")
-        }
-        if (pokemonAtacaSegundo.currentHP>0) {
-            ejecutarAccion(pokemonAtacaSegundo, pokemonAtacaPrimero, accion, eleccion) //TURNO DEL POKEMON QUE ATACA SEGUNDO
-        } else {
-            print("${pokemonAtacaPrimero.name} se ha debilitado.\n")
-        }
-    }
-
     fun comprobarVelocidad () : Boolean {
-        return pokemonAtacaPrimero.velocidad < pokemonAtacaSegundo.velocidad
+        if (pokemonAtacaPrimero.velocidad < pokemonAtacaSegundo.velocidad) return true
+        return false
     }
 
     //LISTO
@@ -33,6 +21,10 @@ class Batalla(val pokemon1 : Pokemon, val pokemon2 : Pokemon, var accion:Int,var
         var danio : Int = 0
         when (accion) {
             0 -> {
+                if (atacante.estado==1){
+                    atacante.evasion-=95
+                    atacante.estado=0
+                }
                 val datos = atacante.Atacar(eleccion)
                 if (ComprobarAcierto(datos["precision"]!!.toInt(), enemigo.evasion)){
                     when (datos["categoria"]) {
@@ -48,14 +40,14 @@ class Batalla(val pokemon1 : Pokemon, val pokemon2 : Pokemon, var accion:Int,var
                     print("${atacante.name} ha fallado")
                 }
             }
-            1 ->  RecibirObjeto(atacante,atacante.UsarObjeto())
+            1 ->  RecibirObjeto(atacante,atacante.UsarObjeto(eleccion))
             2 -> atacante.Evolucionar()
         }
         print("${enemigo.name} se ha quedado con ${enemigo.currentHP}/${enemigo.HP()}")
     }
 
     //LISTO
-    private fun RecibirObjeto (poke : Pokemon, curacion : Int){
+    public fun RecibirObjeto (poke : Pokemon, curacion : Int){
         poke.curar(curacion)
     }
 

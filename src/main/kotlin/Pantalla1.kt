@@ -39,7 +39,6 @@ fun pantallaInicio(cambiarPantalla:(Int)->Unit){
     var pokemon1 by remember { mutableStateOf(pok) }
     var pokemon2 by remember { mutableStateOf(pok2) }
     var pokemon3 by remember { mutableStateOf(pok3) }
-    var pokedex by remember { mutableStateOf("pokedexvacia.png") }
     var contador = 0
     var corutina = rememberCoroutineScope()
     MaterialTheme {
@@ -141,12 +140,14 @@ fun pantallaInicio(cambiarPantalla:(Int)->Unit){
                 contentDescription = "descripcion"
             )
             Button(enabled = showDialog == 2, onClick = {
+                bat1 = Batalla(peleadores[0], peleadores[1],-1,-1)
                 if (bat1.comprobarVelocidad()) {
                     val aux = peleadores[0]
                     peleadores[0] = peleadores[1]
-                    peleadores[1] = aux }
-                cambiarPantalla(2)
-                bat1 = Batalla(peleadores[0], peleadores[1],-1,-1) }, modifier = Modifier.size(65.dp, 30.dp).offset(168.dp))
+                    peleadores[1] = aux
+                    bat1 = Batalla(peleadores[0], peleadores[1],-1,-1) }
+                cambiarPantalla(2)}, modifier = Modifier.size(65.dp, 30.dp).offset(168.dp))
+
             {
                 Text("START", color = Color.Green, textAlign = TextAlign.Justify, fontSize = 7.sp) }
         }

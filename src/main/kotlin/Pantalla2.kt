@@ -1,46 +1,28 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.TopStart
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.awt.SystemColor.text
-import kotlin.reflect.KProperty
-
 
 
 @Composable
 fun pantalla2(cambiarPantalla:(Int)->Unit){
+    var contador by remember { mutableStateOf(1) }
     var coloVIda by remember { mutableStateOf(verde) }
     var coloVIda2 by remember { mutableStateOf(verde) }
     var vida1 by remember { mutableStateOf(bat1.pokemon1.currentHP) }
     var vida2 by remember { mutableStateOf(bat1.pokemon2.currentHP) }
     var nombe by remember { mutableStateOf(bat1.pokemon1.name) }
     var nombe2 = bat1.pokemon2.name
-    var pantallaSeleccionada1 by remember { mutableStateOf(0) }
-    val cambiarPantalla1:(Int)->Unit = {pantallaSeleccionada1 = it}
-
-    when(pantallaSeleccionada1){
-        1->pantallaMovimientos(cambiarPantalla,cambiarPantalla1)
-        2->pantallaObjetos (cambiarPantalla,cambiarPantalla1)
-    }
+    var minipantalla by remember { mutableStateOf(0) }
+    val PantallaAccion:(Int)->Unit = {minipantalla = it}
+    val actualizarVida:(Int)->Unit = {vida1 = it }
+    val actualizarVida2:(Int)->Unit = {vida2 = it }
+    val bloquearPantalla:(Int)->Unit = {contador = it}
     if(vida1<bat1.pokemon1.hp*0.5){
         coloVIda = Color(0xffFFFF00)
     }
@@ -52,6 +34,10 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
     }
     if(vida2<bat1.pokemon2.hp*0.2){
         coloVIda2 = Color(0xffD50000)
+    }
+    when(minipantalla){
+        1->pantallaMovimientos(bloquearPantalla,actualizarVida2,actualizarVida,cambiarPantalla,PantallaAccion)
+        2->pantallaObjetos(bloquearPantalla,actualizarVida,cambiarPantalla)
     }
     Box(){
             Image(
@@ -96,7 +82,7 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
             contentDescription = "descripcion"
         )
         Image(
-            modifier = Modifier.size(width = 256.dp, height = 192.dp).offset(0.dp,-30.dp),
+            modifier = Modifier.size(width = 256.dp, height = 192.dp).offset(0.dp,-25.dp),
             painter = painterResource("TextoCombate.png"),
             contentDescription = "descripcion"
         )
@@ -107,27 +93,28 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
         )
     MaterialTheme(colorRojo) {
         Button(
-            modifier = Modifier.offset(150.dp, 151.dp)
+            modifier = Modifier.offset(150.dp, 156.dp)
                 .size(width = 90.dp, height = 64.dp),
-            onClick = { pantallaSeleccionada1 = 1 }) {
-            Text("Atacar" ,color = Color.White)
-        }
+            onClick = { minipantalla = 1 },
+            enabled = contador == 1)
+            { Text("Atacar" ,color = Color.White) }
         MaterialTheme(colorAmarillo) {
             Button(
-                modifier = Modifier.offset(150.dp, 215.dp)
+                modifier = Modifier.offset(150.dp, 220.dp)
                     .size(width = 90.dp, height = 64.dp),
-                onClick = { pantallaSeleccionada1 = 2 }) {
+                onClick = { minipantalla = 2  },
+                enabled = contador == 1) {
                 Text("Usar Objeto")
             }
         }}
         MaterialTheme(colorAzul) {
             Button(
-                modifier = Modifier.offset(150.dp, 279.dp)
+                modifier = Modifier.offset(150.dp, 284.dp)
                     .size(width = 90.dp, height = 64.dp),
                 onClick = {
                     bat1.pokemon1.Evolucionar()
                     if (bat1.pokemon1.name != nombe) {
-                        nombe = "${bat1.pokemon1.name}"
+                        nombe = bat1.pokemon1.name
                     }
                     if (bat1.pokemon1.currentHP != vida1) {
                         vida1 = bat1.pokemon1.currentHP
@@ -142,41 +129,17 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
                         coloVIda2 = Color(0xffD50000)
                     }
                     cambiarPantalla(3)
-                }) {
+                },
+                        enabled = contador == 1) {
                 Text("Evolucionar")
             }
         }
     Image(
-        modifier = Modifier.fillMaxWidth().height(192.dp).offset(0.dp,142.dp),
+        modifier = Modifier.fillMaxWidth().height(192.dp).offset(0.dp,149.dp),
         painter = painterResource("CajaAcciones.png"),
         contentDescription = "descripcion"
     )
-        Button(modifier = Modifier.offset(280.dp, 128.dp),
-            onClick = {
-                bat1.pokemon1.recibirDanyo(5)
-                if (vida1 != bat1.pokemon1.currentHP) {
-                    vida1 = bat1.pokemon1.currentHP
-                }
-                if (vida1 < bat1.pokemon1.hp * 0.5) {
-                    coloVIda = Color(0xffFFFF00)
-                }
-                if (vida1 < bat1.pokemon1.hp * 0.2) {
-                    coloVIda = Color(0xffD50000)
-                }
-            }) {
-            Text("DAÑO")
         }
-        Button(modifier = Modifier.offset(320.dp, 200.dp),
-            onClick = {
-                bat1.pokemon1.curar(5)
-                if (vida1 != bat1.pokemon1.currentHP) {
-                    vida1 = bat1.pokemon1.currentHP
-                }
-                if (vida1 > bat1.pokemon1.hp * 0.5) {
-                    coloVIda = verde
-                }
-            }) { Text("CURAR")
-        }}
 
 
 

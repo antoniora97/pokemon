@@ -1,6 +1,7 @@
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
+
 class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, SpDefense: Int, velocidad: Int, type: String,
               Evoluciones: ArrayList<String>, movimientos: ArrayList<Movimiento>,
               objetos: ArrayList<Objeto>, evasion:Int, estado:Int) :
@@ -8,8 +9,10 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
     Acciones{
 
     private var tipo:String = type
+     var objetos1 = objetos
 
     //LISTO
+
     fun recibirDanyo (danyo : Int) {
         if (currentHP > 0) {
             currentHP -= danyo
@@ -61,27 +64,16 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
     }
 
     //LISTO
-    override fun UsarObjeto() : Int{ //Devuelve a batalla la cantidad de salud
-        if (objetos.size!=0) {
-            while (true) {
-                print("$name tiene los siguientes objetos:\n")
-                showObjetos()
+    override fun UsarObjeto(Indice:Int) : Int{ //Devuelve a batalla la cantidad de salud
+        if (objetos1.size>0) {
                 //le pedimos el objeto
-                print("Qué objeto le quieres dar? : ")
-                val nombreObjeto = readLine()!!.lowercase() // que va a recuperar el pokemon
+                // que va a recuperar el pokemon
                 //Buscamos la coincidencia
-                for (o in objetos) {
-                    if (nombreObjeto == o.nombre.lowercase()) {
-                        val curacion = o.curacion()
-                        objetos.remove(o)
-                        return curacion
-                    }
-                }
-                //si no se encuentra avisamos
-                print("Ese objeto no lo tiene $name.")
+                    val curacion = objetos1[Indice].salud
+                    objetos1.removeAt(Indice)
+                    return curacion
+
             }
-        }
-        print("$name no tiene objetos para curarse.")
         return 0
     }
 
@@ -211,11 +203,6 @@ class Pokemon(name: String, hp: Int, attack: Int, SpAttack: Int, defense: Int, S
 
     //LISTO
     //Muestra los objetos curativos que tiene el pokemon
-    private fun showObjetos () {
-        for (o in objetos) {
-            print("\t${o.nombre} (cura ${o.curacion()} puntos de vida)\n")
-        }
-    }
 
 
 }

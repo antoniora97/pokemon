@@ -15,7 +15,7 @@ abstract class PokeStats
     protected val type: String,
     protected val Evoluciones: ArrayList<String>,
     public val movimientos: ArrayList<Movimiento>,
-    public val objetos: ArrayList<Objeto>,
+    protected var objetos: ArrayList<Objeto>,
     public var evasion:Int,
     public var estado:Int
     ) {
