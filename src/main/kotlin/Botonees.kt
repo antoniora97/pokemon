@@ -83,7 +83,10 @@ fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit
                         actualizarVida2(bat1.pokemon2.currentHP)
                         actualizarPP1(bat1.pokemon1.movimientos[0].currentPP)
                       bloquearPantalla(0)
-                      bloquearPantalla2(0)} ,
+                      bloquearPantalla2(0)
+                        if (bat1.pokemon2.currentHP==0){
+                            cambiarPantalla(-1)
+                        }} ,
                 enabled = contador==1
                 ) {
                     Text(
@@ -113,7 +116,11 @@ fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit
                         actualizarVida2(bat1.pokemon2.currentHP)
                         actualizarPP2(bat1.pokemon1.movimientos[1].currentPP)
                         bloquearPantalla2(0)
-                        bloquearPantalla(0)},
+                        bloquearPantalla(0)
+                        if (bat1.pokemon2.currentHP==0){
+                            cambiarPantalla(-1)
+                        }}
+                    ,
                     enabled = contador==1
                 ) {
                     Text(
@@ -144,7 +151,10 @@ fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit
                         actualizarVida2(bat1.pokemon2.currentHP)
                         actualizarPP3(bat1.pokemon1.movimientos[2].currentPP)
                         bloquearPantalla(0)
-                        bloquearPantalla2(0)},
+                        bloquearPantalla2(0)
+                        if (bat1.pokemon2.currentHP==0){
+                            cambiarPantalla(-1)
+                        }},
                     enabled = contador==1
                 ) {
                     Text(
@@ -455,7 +465,10 @@ fun pantallaMovimientos2(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Uni
                         actualizarVida2(bat1.pokemon1.currentHP)
                         actualizarPP1(bat1.pokemon2.movimientos[0].currentPP)
                         bloquearPantalla(0)
-                        bloquearPantalla2(0)} ,
+                        bloquearPantalla2(0)
+                        if (bat1.pokemon1.currentHP==0){
+                            cambiarPantalla(-1)
+                        }} ,
                     enabled = contador==1
                 ) {
                     Text(
@@ -485,7 +498,10 @@ fun pantallaMovimientos2(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Uni
                         actualizarVida2(bat1.pokemon1.currentHP)
                         actualizarPP2(bat1.pokemon2.movimientos[1].currentPP)
                         bloquearPantalla2(0)
-                        bloquearPantalla(0)},
+                        bloquearPantalla(0)
+                        if (bat1.pokemon1.currentHP==0){
+                            cambiarPantalla(-1)
+                        }},
                     enabled = contador==1
                 ) {
                     Text(
@@ -516,7 +532,10 @@ fun pantallaMovimientos2(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Uni
                         actualizarVida2(bat1.pokemon1.currentHP)
                         actualizarPP3(bat1.pokemon2.movimientos[2].currentPP)
                         bloquearPantalla(0)
-                        bloquearPantalla2(0)},
+                        bloquearPantalla2(0)
+                        if (bat1.pokemon1.currentHP==0){
+                            cambiarPantalla(-1)
+                        }},
                     enabled = contador==1
                 ) {
                     Text(

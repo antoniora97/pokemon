@@ -22,9 +22,9 @@ fun PantallaTitulo(cambiarPantalla:(Int)->Unit){
     var num = 1
     var no by  remember { mutableStateOf(num) }
     corutina.launch { while(true){
-        delay(500L)
         if(no==50){no=1}
         no++
+        delay(10000L)
     }}
     Column(modifier = Modifier.size(width = 400.dp, height = 384.dp)
         .clickable { cambiarPantalla(1) },
