@@ -14,17 +14,13 @@ class Batalla(val pokemon1 : Pokemon, val pokemon2 : Pokemon, var accion:Int,var
     public fun ejecutarAccion (atacante: Pokemon, enemigo: Pokemon, accion:Int, eleccion:Int) {
         if (atacante.estado==2) {atacante.ComprobarEstado(atacante.estado,0)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
         if (atacante.estado==1) {
-            atacante.evasion-95
+            atacante.evasion-=95
             print("${atacante.name} ha salido del Agua\n")
         }
         atacante.estado=0
         var danio : Int = 0
         when (accion) {
             0 -> {
-                if (atacante.estado==1){
-                    atacante.evasion-=95
-                    atacante.estado=0
-                }
                 val datos = atacante.Atacar(eleccion)
                 if (ComprobarAcierto(datos["precision"]!!.toInt(), enemigo.evasion)){
                     when (datos["categoria"]) {

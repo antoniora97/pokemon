@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.controlsfx:controlsfx:11.1.1")
 }
 
 tasks.withType<KotlinCompile>() {

@@ -45,13 +45,13 @@ fun pantallaInicio(cambiarPantalla:(Int)->Unit){
         Box(modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(Color.Green)) {
+            .background(Color.White)) {
             Image(
                 modifier = Modifier.fillMaxWidth().fillMaxHeight().offset(0.dp,-100.dp),
                 painter = painterResource("FondoBosque.png"),
                 contentDescription = "descripcion")
             Image(
-                modifier = Modifier.size(300.dp,192.dp).offset(0.dp,139.dp),
+                modifier = Modifier.size(256.dp,300.dp).offset(0.dp,88.dp),
                 painter = painterResource("a$contador.png"),
                 contentDescription = "descripcion")
             Image(

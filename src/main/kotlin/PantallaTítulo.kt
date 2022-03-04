@@ -17,10 +17,9 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun PantallaTitulo(cambiarPantalla:(Int)->Unit){
-    var corutina = rememberCoroutineScope()
+    val corutina = rememberCoroutineScope()
     var contador = 0
-    var num = 1
-    var no by  remember { mutableStateOf(num) }
+    var no by  remember { mutableStateOf(1) }
     corutina.launch { while(true){
         if(no==50){no=1}
         no++

@@ -10,6 +10,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+
 @Composable
 fun pantalla3(cambiarPantalla:(Int)->Unit){
     var minipantalla by remember { mutableStateOf(0) }
@@ -28,7 +32,32 @@ fun pantalla3(cambiarPantalla:(Int)->Unit){
         3->pantallaMovimientos2(bloquearPantalla,actualizarVida2,actualizarVida,cambiarPantalla,pantallaAccion)
         4->pantallaObjetos2(bloquearPantalla,actualizarVida,cambiarPantalla)
     }
-
+    val rutinatotodile = rememberCoroutineScope()
+    var animacion by remember { mutableStateOf(1) }
+    if (bat1.pokemon1.name=="Totodile"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==66){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon1.name=="Chikorita"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==23){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon1.name=="Cyndaquil"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==89){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
 
     if(vida1<bat1.pokemon2.hp*0.5){
         coloVIda = Color(0xffFFFF00)
@@ -90,8 +119,8 @@ fun pantalla3(cambiarPantalla:(Int)->Unit){
         contentDescription = "descripcion"
     )
     Image(
-        modifier = Modifier.size(width = 256.dp, height = 192.dp).offset(0.dp,-25.dp),
-        painter = painterResource("${nombe2}.png"),
+        modifier = Modifier.offset(125.dp,5.dp),
+        painter = painterResource("${nombe2} ($animacion).png"),
         contentDescription = "descripcion"
     )
     MaterialTheme(colorRojo) {

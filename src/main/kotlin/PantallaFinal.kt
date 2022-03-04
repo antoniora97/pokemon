@@ -18,6 +18,7 @@ fun pantallaFinal(pokemon:Pokemon){
     var contador by  remember { mutableStateOf(1) }
     var corutina = rememberCoroutineScope()
     corutina.launch { while(true){
+        delay(40L)
         if(contador==24){contador=1}
         contador++
         delay(10000L)

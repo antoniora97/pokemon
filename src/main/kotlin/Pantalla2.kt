@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -23,6 +25,48 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
     val actualizarVida:(Int)->Unit = {vida1 = it }
     val actualizarVida2:(Int)->Unit = {vida2 = it }
     val bloquearPantalla:(Int)->Unit = {contador = it}
+    val rutinatotodile = rememberCoroutineScope()
+    var animacion by remember { mutableStateOf(1) }
+    if (bat1.pokemon2.name=="Totodile"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==66){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon2.name=="Totodile"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==66){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon2.name=="Feraligatr"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==66){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon2.name=="Chikorita"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==24){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon2.name=="Cyndaquil"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==89){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
     if(vida1<bat1.pokemon1.hp*0.5){
         coloVIda = Color(0xffFFFF00)
     }
@@ -87,8 +131,8 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
             contentDescription = "descripcion"
         )
         Image(
-            modifier = Modifier.size(width = 256.dp, height = 192.dp).offset(0.dp,-25.dp),
-            painter = painterResource("${nombe2}.png"),
+            modifier = Modifier.offset(125.dp,5.dp),
+            painter = painterResource("${nombe2} ($animacion).png"),
             contentDescription = "descripcion"
         )
     MaterialTheme(colorRojo) {
