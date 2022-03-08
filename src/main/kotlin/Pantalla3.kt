@@ -32,28 +32,76 @@ fun pantalla3(cambiarPantalla:(Int)->Unit){
         3->pantallaMovimientos2(bloquearPantalla,actualizarVida2,actualizarVida,cambiarPantalla,pantallaAccion)
         4->pantallaObjetos2(bloquearPantalla,actualizarVida,cambiarPantalla)
     }
-    val rutinatotodile = rememberCoroutineScope()
+    val rutina = rememberCoroutineScope()
     var animacion by remember { mutableStateOf(1) }
     if (bat1.pokemon1.name=="Totodile"){
-        rutinatotodile.launch { while(true){
+        rutina.launch { while(true){
             delay(60L)
             if(animacion==66){animacion=1}
             animacion++
             delay(1000000000L)
         } }
     }
-    if (bat1.pokemon1.name=="Chikorita"){
-        rutinatotodile.launch { while(true){
+    if (bat1.pokemon1.name=="Croconaw"){
+        rutina.launch { while(true){
             delay(60L)
-            if(animacion==23){animacion=1}
+            if(animacion==388){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon1.name=="Feraligatr"){
+        rutina.launch { while(true){
+            delay(60L)
+            if(animacion==71){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon1.name=="Chikorita"){
+        rutina.launch { while(true){
+            delay(60L)
+            if(animacion==24){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon1.name=="Bayleef"){
+        rutina.launch { while(true){
+            delay(60L)
+            if(animacion==62){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon1.name=="Meganium"){
+        rutina.launch { while(true){
+            delay(60L)
+            if(animacion==108){animacion=1}
             animacion++
             delay(1000000000L)
         } }
     }
     if (bat1.pokemon1.name=="Cyndaquil"){
-        rutinatotodile.launch { while(true){
+        rutina.launch { while(true){
             delay(60L)
             if(animacion==89){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon1.name=="Quilava"){
+        rutina.launch { while(true){
+            delay(60L)
+            if(animacion==146){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon1.name=="Typhlosion"){
+        rutina.launch { while(true){
+            delay(60L)
+            if(animacion==250){animacion=1}
             animacion++
             delay(1000000000L)
         } }
@@ -135,7 +183,7 @@ fun pantalla3(cambiarPantalla:(Int)->Unit){
                 modifier = Modifier.offset(150.dp, 220.dp)
                     .size(width = 90.dp, height = 64.dp),
                 onClick = { minipantalla = 4},
-                enabled = contador==1) {
+                enabled = contador==1 && bat1.pokemon2.objetos1.size>0) {
                 Text("Usar Objeto")
             }
         }}
@@ -145,8 +193,11 @@ fun pantalla3(cambiarPantalla:(Int)->Unit){
                 .size(width = 90.dp, height = 64.dp),
             onClick = {
                 bat1.pokemon2.Evolucionar()
+                if (bat1.pokemon1.estado==1) {
+                    bat1.pokemon1.evasion-=95
+                }
                 if (bat1.pokemon2.name != nombe) {
-                    nombe = "${bat1.pokemon2.name}"
+                    nombe = bat1.pokemon2.name
                 }
                 if (bat1.pokemon2.currentHP != vida1) {
                     vida1 = bat1.pokemon2.currentHP

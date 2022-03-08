@@ -11,12 +11,7 @@ class Batalla(val pokemon1 : Pokemon, val pokemon2 : Pokemon, var accion:Int,var
     }
 
     //LISTO
-    public fun ejecutarAccion (atacante: Pokemon, enemigo: Pokemon, accion:Int, eleccion:Int) {
-        if (atacante.estado==2) {atacante.ComprobarEstado(atacante.estado,0)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
-        if (atacante.estado==1) {
-            atacante.evasion-=95
-            print("${atacante.name} ha salido del Agua\n")
-        }
+    public fun ejecutarAccion (atacante: Pokemon, enemigo: Pokemon, accion:Int, eleccion:Int): Int {
         atacante.estado=0
         var danio : Int = 0
         when (accion) {
@@ -32,14 +27,14 @@ class Batalla(val pokemon1 : Pokemon, val pokemon2 : Pokemon, var accion:Int,var
                     if (atacante.estado==1 || atacante.estado==3){ //Estos estados se tienen que activar en el mismo momento que se usa el movimiento
                         atacante.ComprobarEstado(atacante.estado,danio)
                     }
-                }else{
-                    print("${atacante.name} ha fallado")
+                return danio}else{
+                   return danio
                 }
             }
             1 ->  RecibirObjeto(atacante,atacante.UsarObjeto(eleccion))
             2 -> atacante.Evolucionar()
         }
-        print("${enemigo.name} se ha quedado con ${enemigo.currentHP}/${enemigo.HP()}")
+        return danio
     }
 
     //LISTO

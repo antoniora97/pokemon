@@ -36,11 +36,12 @@ fun App() {
     var pantallaSeleccionada by remember { mutableStateOf(0) }
     val cambiarPantalla:(Int)->Unit = {pantallaSeleccionada = it}
         when (pantallaSeleccionada) {
-            -1-> pantallaFinal(chikorita)
-            0->PantallaTitulo(cambiarPantalla)
+            0 -> PantallaTitulo(cambiarPantalla)
             1 -> pantallaInicio(cambiarPantalla)
             2 -> pantalla2(cambiarPantalla)
-            3 ->pantalla3(cambiarPantalla)
+            3 -> pantalla3(cambiarPantalla)
+            4 -> pantallaFinal(bat1.pokemon1)
+            5 -> pantallaFinal2(bat1.pokemon2)
         }
     }
 

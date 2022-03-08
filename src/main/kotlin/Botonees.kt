@@ -11,6 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 
 @Composable
 fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit,actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit,cambiarPantalla1:(Int)->Unit){
@@ -26,13 +29,17 @@ fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit
     val actualizarPP1:(Int)->Unit = { pp1= it}
     val actualizarPP2:(Int)->Unit = { pp2= it}
     val actualizarPP3:(Int)->Unit = { pp3= it}
+    var acierto:Int by remember { mutableStateOf(0) }
+    val actualizarAcierto:(Int)->Unit = { acierto= it}
     var contador by remember { mutableStateOf(1) }
     val bloquearPantalla2:(Int)->Unit = {contador = it}
 
 
     when(pantallaSeleccionada2){
-        1->descripcionCombate(cambiarPantalla2,accion)
-        2->Efectividad(cambiarPantalla,accion)
+        1->descripcionCombate(cambiarPantalla2,accion,acierto)
+        2->Efectividad(cambiarPantalla2,cambiarPantalla,accion)
+        3->Debilitado(cambiarPantalla)
+        4->Fallo(cambiarPantalla)
     }
     when(bat1.pokemon1.movimientos[0].type){
         "Agua" -> Borde1 = Color.Blue
@@ -78,15 +85,12 @@ fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit
                     shape = CutCornerShape(0),
                     onClick = {
                         accion = 0
-                        bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,accion,0)
+                        actualizarAcierto(bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,accion,0))
                         cambiarPantalla2(1)
                         actualizarVida2(bat1.pokemon2.currentHP)
                         actualizarPP1(bat1.pokemon1.movimientos[0].currentPP)
-                      bloquearPantalla(0)
-                      bloquearPantalla2(0)
-                        if (bat1.pokemon2.currentHP==0){
-                            cambiarPantalla(-1)
-                        }} ,
+                        bloquearPantalla(0)
+                        bloquearPantalla2(0) } ,
                 enabled = contador==1
                 ) {
                     Text(
@@ -111,15 +115,12 @@ fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit
                     ),
                     onClick = {
                         accion = 1
-                        bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,0,1)
+                        actualizarAcierto(bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,0,1))
                         cambiarPantalla2(1)
                         actualizarVida2(bat1.pokemon2.currentHP)
                         actualizarPP2(bat1.pokemon1.movimientos[1].currentPP)
                         bloquearPantalla2(0)
-                        bloquearPantalla(0)
-                        if (bat1.pokemon2.currentHP==0){
-                            cambiarPantalla(-1)
-                        }}
+                        bloquearPantalla(0) }
                     ,
                     enabled = contador==1
                 ) {
@@ -146,15 +147,12 @@ fun pantallaMovimientos(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Unit
                     onClick = {
 
                         accion = 2
-                        bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,0,2)
+                        actualizarAcierto(bat1.ejecutarAccion(bat1.pokemon1,bat1.pokemon2,0,2))
                         cambiarPantalla2(1)
                         actualizarVida2(bat1.pokemon2.currentHP)
                         actualizarPP3(bat1.pokemon1.movimientos[2].currentPP)
                         bloquearPantalla(0)
-                        bloquearPantalla2(0)
-                        if (bat1.pokemon2.currentHP==0){
-                            cambiarPantalla(-1)
-                        }},
+                        bloquearPantalla2(0) },
                     enabled = contador==1
                 ) {
                     Text(
@@ -408,13 +406,17 @@ fun pantallaMovimientos2(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Uni
     val actualizarPP1:(Int)->Unit = { pp1= it}
     val actualizarPP2:(Int)->Unit = { pp2= it}
     val actualizarPP3:(Int)->Unit = { pp3= it}
+    var acierto:Int by remember { mutableStateOf(0) }
+    val actualizarAcierto:(Int)->Unit = { acierto= it}
     var contador by remember { mutableStateOf(1) }
     val bloquearPantalla2:(Int)->Unit = {contador = it}
 
 
     when(pantallaSeleccionada2){
-        1->descripcionCombate2(cambiarPantalla2,accion)
-        2->Efectividad2(cambiarPantalla,accion)
+        1->descripcionCombate2(cambiarPantalla2,accion,acierto)
+        2->Efectividad2(cambiarPantalla2,cambiarPantalla,accion)
+        3->Debilitado2(cambiarPantalla)
+        4->Fallo2(cambiarPantalla)
     }
     when(bat1.pokemon2.movimientos[0].type){
         "Agua" -> Borde1 = Color.Blue
@@ -460,15 +462,12 @@ fun pantallaMovimientos2(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Uni
                     shape = CutCornerShape(0),
                     onClick = {
                         accion = 0
-                        bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,accion,0)
+                        actualizarAcierto(bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,accion,0))
                         cambiarPantalla2(1)
                         actualizarVida2(bat1.pokemon1.currentHP)
                         actualizarPP1(bat1.pokemon2.movimientos[0].currentPP)
                         bloquearPantalla(0)
-                        bloquearPantalla2(0)
-                        if (bat1.pokemon1.currentHP==0){
-                            cambiarPantalla(-1)
-                        }} ,
+                        bloquearPantalla2(0) } ,
                     enabled = contador==1
                 ) {
                     Text(
@@ -493,15 +492,12 @@ fun pantallaMovimientos2(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Uni
                     ),
                     onClick = {
                         accion = 1
-                        bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,0,1)
+                      actualizarAcierto(bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,0,1))
                         cambiarPantalla2(1)
                         actualizarVida2(bat1.pokemon1.currentHP)
                         actualizarPP2(bat1.pokemon2.movimientos[1].currentPP)
                         bloquearPantalla2(0)
-                        bloquearPantalla(0)
-                        if (bat1.pokemon1.currentHP==0){
-                            cambiarPantalla(-1)
-                        }},
+                        bloquearPantalla(0) },
                     enabled = contador==1
                 ) {
                     Text(
@@ -527,15 +523,12 @@ fun pantallaMovimientos2(bloquearPantalla:(Int)->Unit,actualizarVida2:(Int)->Uni
                     onClick = {
 
                         accion = 2
-                        bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,0,2)
+                       actualizarAcierto(bat1.ejecutarAccion(bat1.pokemon2,bat1.pokemon1,0,2))
                         cambiarPantalla2(1)
                         actualizarVida2(bat1.pokemon1.currentHP)
                         actualizarPP3(bat1.pokemon2.movimientos[2].currentPP)
                         bloquearPantalla(0)
-                        bloquearPantalla2(0)
-                        if (bat1.pokemon1.currentHP==0){
-                            cambiarPantalla(-1)
-                        }},
+                        bloquearPantalla2(0) },
                     enabled = contador==1
                 ) {
                     Text(
@@ -777,9 +770,16 @@ fun pantallaObjetosCompleta2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(
     }
 }
         @Composable
-        fun descripcionCombate(cambiarPantalla2:(Int)->Unit,accion:Int){
-            Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable { cambiarPantalla2(2) }){
-              Text("${bat1.pokemon1.name} usó ${bat1.pokemon1.movimientos[accion].nombre}",color = Color.Black,fontSize = 10.sp)}
+        fun descripcionCombate(cambiarPantalla2:(Int)->Unit,accion:Int,acierto:Int){
+            Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable { if (acierto>0) {cambiarPantalla2(2)} else{cambiarPantalla2(4)} }){
+
+              Text("${bat1.pokemon1.name} usó ${bat1.pokemon1.movimientos[accion].nombre}",color = Color.Black,fontSize = 10.sp)
+                Icon(
+                      Icons.Default.KeyboardArrowDown,
+                contentDescription = null,
+                modifier = Modifier.offset(190.dp,0.dp)
+                )}
+
               if (bat1.pokemon1.movimientos[accion].efecto!=0){
                   Column(modifier = Modifier.size(256.dp,30.dp).offset(135.dp,115.dp)){
                   when(bat1.pokemon1.movimientos[accion].efecto){
@@ -792,9 +792,14 @@ fun pantallaObjetosCompleta2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(
         }
 
         @Composable
-        fun descripcionCombate2(cambiarPantalla3:(Int)->Unit,accion:Int){
-            Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable { cambiarPantalla3(2) }){
-            Text("${bat1.pokemon2.name} usó ${bat1.pokemon2.movimientos[accion].nombre}",color = Color.Black,fontSize = 10.sp)}
+        fun descripcionCombate2(cambiarPantalla2:(Int)->Unit,accion:Int,acierto:Int){
+            Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable { if (acierto>0) {cambiarPantalla2(2)} else{cambiarPantalla2(4)}}){
+            Text("${bat1.pokemon2.name} usó ${bat1.pokemon2.movimientos[accion].nombre}",color = Color.Black,fontSize = 10.sp)
+                Icon(
+                    Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                    modifier = Modifier.offset(190.dp,0.dp)
+                )}
             if (bat1.pokemon2.movimientos[accion].efecto!=0){
                 Column(modifier = Modifier.size(256.dp,30.dp).offset(135.dp,115.dp)){
                     when(bat1.pokemon2.movimientos[accion].efecto){
@@ -806,8 +811,11 @@ fun pantallaObjetosCompleta2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(
             }
         }
         @Composable
-        fun Efectividad(cambiarPantalla:(Int)->Unit,accion:Int){
-            Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable { cambiarPantalla(3) })
+        fun Efectividad(cambiarPantalla2:(Int)->Unit ,cambiarPantalla:(Int)->Unit,accion:Int){
+            Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable { if (bat1.pokemon2.estado==2) {bat1.pokemon2.ComprobarEstado(bat1.pokemon2.estado,0)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
+                if (bat1.pokemon2.currentHP==0){
+                    cambiarPantalla2(3)
+                }else{ cambiarPantalla(3) }})
             {
                 if (bat1.ComprobarEfectividad(bat1.pokemon1.movimientos[accion].type, bat1.pokemon2.Type()) == 2.0) {
                     Text(
@@ -815,6 +823,11 @@ fun pantallaObjetosCompleta2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(
                         color = Color.Black,
                         fontSize = 10.sp,
                         textAlign = TextAlign.Start)
+                    Icon(
+                        Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.offset(93.dp,10.dp)
+                    )
                 }
                 if (bat1.ComprobarEfectividad(bat1.pokemon1.movimientos[accion].type, bat1.pokemon2.Type()) == 0.5) {
                     Text(
@@ -823,12 +836,39 @@ fun pantallaObjetosCompleta2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(
                         fontSize = 10.sp,
                         textAlign = TextAlign.Start,
                     )
+                    Icon(
+                        Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.offset(93.dp,10.dp)
+                    )
                 }
+                if (bat1.ComprobarEfectividad(bat1.pokemon1.movimientos[accion].type, bat1.pokemon2.Type()) == 1.0) {
+                    Text(
+                        "Ha sido neutro.",
+                        color = Color.Black,
+                        fontSize = 10.sp,
+                        textAlign = TextAlign.Start,
+                    )
+                    Icon(
+                        Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.offset(93.dp,10.dp)
+                    )
+                }
+
             }
         }
         @Composable
-        fun Efectividad2(cambiarPantalla:(Int)->Unit,accion:Int){
-            Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable { cambiarPantalla(2) })
+        fun Efectividad2(cambiarPantalla2:(Int)->Unit ,cambiarPantalla:(Int)->Unit,accion:Int){
+            Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable {
+                if (bat1.pokemon1.estado==2) {bat1.pokemon1.ComprobarEstado(bat1.pokemon1.estado,0)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
+                if (bat1.pokemon1.estado==1) {
+                    bat1.pokemon1.evasion-=95
+                }
+                if (bat1.pokemon1.currentHP==0){
+                    cambiarPantalla2(3)
+                }else{
+                cambiarPantalla(2) }})
             {
                 if (bat1.ComprobarEfectividad(bat1.pokemon2.movimientos[accion].type, bat1.pokemon1.Type()) == 2.0) {
                     Text(
@@ -836,6 +876,11 @@ fun pantallaObjetosCompleta2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(
                         color = Color.Black,
                         fontSize = 10.sp,
                         textAlign = TextAlign.Start,
+                    )
+                    Icon(
+                        Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.offset(93.dp,10.dp)
                     )
                 }
                 if (bat1.ComprobarEfectividad(bat1.pokemon2.movimientos[accion].type, bat1.pokemon1.Type()) == 0.5) {
@@ -845,29 +890,137 @@ fun pantallaObjetosCompleta2 (seleccionarObjeto:(Int)->Unit,cambiarPantallaObj:(
                         fontSize = 10.sp,
                         textAlign = TextAlign.Start,
                     )
+                    Icon(
+                        Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.offset(93.dp,10.dp)
+                    )
+                }
+                if (bat1.ComprobarEfectividad(bat1.pokemon2.movimientos[accion].type, bat1.pokemon1.Type()) == 1.0) {
+                    Text(
+                        "Ha sido neutro.",
+                        color = Color.Black,
+                        fontSize = 10.sp,
+                        textAlign = TextAlign.Start,
+                    )
+                    Icon(
+                        Icons.Default.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.offset(93.dp,10.dp)
+                    )
                 }
             }
         }
     @Composable
     fun usoObjeto(actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit, eleccion:Int){
         Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable {
+            if (bat1.pokemon2.estado==2) {bat1.pokemon2.ComprobarEstado(bat1.pokemon2.estado,0)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
+            if (bat1.pokemon2.estado==1) {
+                bat1.pokemon2.evasion-=95
+            }
             bloqueo.bloqueo1=true
             cambiarPantalla(3)
         }){
             Text("Le has dado ${bat1.pokemon1.objetos1[eleccion].nombre} a ${bat1.pokemon1.name}",color = Color.Black,fontSize = 10.sp)
+            Icon(
+                Icons.Default.KeyboardArrowDown,
+                contentDescription = null,
+                modifier = Modifier.offset(190.dp,0.dp)
+            )
             bat1.RecibirObjeto(bat1.pokemon1,bat1.pokemon1.UsarObjeto(eleccion))
             actualizarVida(bat1.pokemon1.currentHP)
     }}
 @Composable
 fun usoObjeto2(actualizarVida:(Int)->Unit,cambiarPantalla:(Int)->Unit,eleccion:Int){
     Column(modifier = Modifier.size(250.dp,30.dp).offset(10.dp,125.dp).clickable {
+        if (bat1.pokemon1.estado==2) {bat1.pokemon1.ComprobarEstado(bat1.pokemon1.estado,0)} //En caso de estar quemado, primero hace el efecto y luego vuelve a la normalidad
+        if (bat1.pokemon1.estado==1) {
+            bat1.pokemon1.evasion-=95
+        }
         bloqueo.bloqueo1=true
         cambiarPantalla(2)
     }){
         Text("Le has dado ${bat1.pokemon2.objetos1[eleccion].nombre} a ${bat1.pokemon2.name}",color = Color.Black,fontSize = 10.sp)
+        Icon(
+            Icons.Default.KeyboardArrowDown,
+            contentDescription = null,
+            modifier = Modifier.offset(190.dp,0.dp)
+        )
         bat1.RecibirObjeto(bat1.pokemon2,bat1.pokemon2.UsarObjeto(eleccion))
         actualizarVida(bat1.pokemon2.currentHP)
     }}
+@Composable
+fun Debilitado(cambiarPantalla:(Int)->Unit){
+    Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable { cambiarPantalla(4)})
+    { Text(
+    "${bat1.pokemon2.name} se ha debilitado...",
+        color = Color.Black,
+        fontSize = 10.sp,
+        textAlign = TextAlign.Start,)
+        Icon(
+            Icons.Default.KeyboardArrowDown,
+            contentDescription = null,
+            modifier = Modifier.offset(70.dp,10.dp)
+        )
+
+    }
+}
+@Composable
+fun Debilitado2(cambiarPantalla:(Int)->Unit){
+    Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable { cambiarPantalla(5)})
+    { Text(
+        "${bat1.pokemon1.name} se ha debilitado...",
+        color = Color.Black,
+        fontSize = 10.sp,
+        textAlign = TextAlign.Start,)
+        Icon(
+            Icons.Default.KeyboardArrowDown,
+            contentDescription = null,
+            modifier = Modifier.offset(70.dp,10.dp)
+        )
+
+    }
+}
+@Composable
+fun Fallo(cambiarPantalla:(Int)->Unit){
+    Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable {
+        if (bat1.pokemon2.estado==1) {
+            bat1.pokemon2.evasion-=95
+        }
+        cambiarPantalla(3)})
+    { Text(
+        "${bat1.pokemon1.name} ha fallado..",
+        color = Color.Black,
+        fontSize = 10.sp,
+        textAlign = TextAlign.Start,)
+        Icon(
+            Icons.Default.KeyboardArrowDown,
+            contentDescription = null,
+            modifier = Modifier.offset(93.dp,10.dp)
+        )
+
+    }
+}
+@Composable
+fun Fallo2(cambiarPantalla:(Int)->Unit){
+    Row(modifier = Modifier.size(256.dp,100.dp).offset(10.dp,125.dp).clickable {
+        if (bat1.pokemon1.estado==1) {
+            bat1.pokemon1.evasion-=95
+        }
+        cambiarPantalla(2)})
+    { Text(
+        "${bat1.pokemon2.name} ha fallado..",
+        color = Color.Black,
+        fontSize = 10.sp,
+        textAlign = TextAlign.Start,)
+        Icon(
+            Icons.Default.KeyboardArrowDown,
+            contentDescription = null,
+            modifier = Modifier.offset(93.dp,10.dp)
+        )
+
+    }
+}
 
 
 

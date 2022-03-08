@@ -35,10 +35,10 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
             delay(1000000000L)
         } }
     }
-    if (bat1.pokemon2.name=="Totodile"){
+    if (bat1.pokemon2.name=="Croconaw"){
         rutinatotodile.launch { while(true){
             delay(60L)
-            if(animacion==66){animacion=1}
+            if(animacion==388){animacion=1}
             animacion++
             delay(1000000000L)
         } }
@@ -46,7 +46,7 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
     if (bat1.pokemon2.name=="Feraligatr"){
         rutinatotodile.launch { while(true){
             delay(60L)
-            if(animacion==66){animacion=1}
+            if(animacion==71){animacion=1}
             animacion++
             delay(1000000000L)
         } }
@@ -59,10 +59,42 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
             delay(1000000000L)
         } }
     }
+    if (bat1.pokemon2.name=="Bayleef"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==62){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon2.name=="Meganium"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==108){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
     if (bat1.pokemon2.name=="Cyndaquil"){
         rutinatotodile.launch { while(true){
             delay(60L)
             if(animacion==89){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon2.name=="Quilava"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==146){animacion=1}
+            animacion++
+            delay(1000000000L)
+        } }
+    }
+    if (bat1.pokemon2.name=="Typhlosion"){
+        rutinatotodile.launch { while(true){
+            delay(60L)
+            if(animacion==250){animacion=1}
             animacion++
             delay(1000000000L)
         } }
@@ -147,7 +179,7 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
                 modifier = Modifier.offset(150.dp, 220.dp)
                     .size(width = 90.dp, height = 64.dp),
                 onClick = { minipantalla = 2  },
-                enabled = contador == 1) {
+                enabled = contador == 1 && bat1.pokemon1.objetos1.size>0) {
                 Text("Usar Objeto")
             }
         }}
@@ -171,6 +203,9 @@ fun pantalla2(cambiarPantalla:(Int)->Unit){
                     }
                     if (vida2 < bat1.pokemon2.hp * 0.2) {
                         coloVIda2 = Color(0xffD50000)
+                    }
+                    if (bat1.pokemon2.estado==1) {
+                        bat1.pokemon2.evasion-=95
                     }
                     cambiarPantalla(3)
                 },
